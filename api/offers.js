@@ -3,7 +3,7 @@ export default async function handler(req, res) {
 
   try {
     const ip = (req.headers['x-forwarded-for'] || '').split(',')[0] || '8.8.8.8';
-    const userAgent = req.headers['user-agent'];
+    const userAgent = req.headers['user-agent'] || "";
 
     async function getOffers(ctype) {
       const url = `https://checkmyapp.site/api/v2?ip=${ip}&user_agent=${encodeURIComponent(userAgent)}&ctype=${ctype}`;
@@ -14,8 +14,10 @@ export default async function handler(req, res) {
         },
       });
 
+      if (!response.ok) return [];
+
       const data = await response.json();
-      return data.success && data.offers ? data.offers : [];
+      return (data && data.success && Array.isArray(data.offers)) ? data.offers : [];
     }
 
     // 1️⃣ CPI first
@@ -27,26 +29,28 @@ export default async function handler(req, res) {
       offers = offers.concat(extra);
     }
 
-    // ✅ 3️⃣ REMOVE DUPLICATES (by link)
+    // 3️⃣ remove duplicates (safer key fallback)
     const seen = new Set();
     const unique = [];
 
     for (let o of offers) {
-      if (!seen.has(o.link)) {
-        seen.add(o.link);
-        unique.push(o);
-      }
+      const key = o.link || o.offerid; // fallback if link missing
+      if (!key || seen.has(key)) continue;
+
+      seen.add(key);
+      unique.push(o);
     }
 
-    // 4️⃣ sort (same as before)
+    // 4️⃣ sort safely
     const sorted = unique
-      .map(o => ({ ...o, payout: parseFloat(o.payout) || 0 }))
+      .map(o => ({
+        ...o,
+        payout: Number(o.payout) || 0
+      }))
       .sort((a, b) => b.payout - a.payout);
 
-    // 5️⃣ top 3 (same as before)
-    const top = sorted.slice(0, 3);
-
-    res.status(200).json({ offers: top });
+    // 5️⃣ keep SAME behavior (top 3)
+    res.status(200).json({ offers: sorted.slice(0, 3) });
 
   } catch (err) {
     res.status(500).json({ error: "Failed", details: err.message });
