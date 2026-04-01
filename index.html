@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Robux Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body style="
+  margin:0;
+  font-family:sans-serif;
+  color:white;
+  background: radial-gradient(circle at top,#111,#000);
+">
+
+<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:15px;">
+
+  <!-- HEADER -->
+  <h1 style="color:#00ffcc;font-size:clamp(22px,6vw,34px);margin:10px 0;">
+    STEAL A BRAINROT PRESENTS V3.8
+  </h1>
+
+  <p style="color:#ff4d4d;font-weight:bold;margin:0;">
+      Live users: <span id="liveCount">1342</span>
+  </p>
+
+  <!-- GENERATOR BOX -->
+  <div style="
+    width:100%;
+    max-width:380px;
+    background:#0f0f0f;
+    padding:20px;
+    border-radius:16px;
+    box-shadow:0 0 25px rgba(0,255,150,0.2);
+    margin-top:15px;
+  ">
+
+    <input id="username" placeholder="Enter Roblox Username"
+      style="
+        width:100%;
+        padding:14px;
+        border:none;
+        border-radius:10px;
+        margin-bottom:12px;
+        font-size:15px;
+        box-sizing:border-box;
+      ">
+
+    <select id="amount"
+      style="
+        width:100%;
+        padding:14px;
+        border:none;
+        border-radius:10px;
+        margin-bottom:12px;
+        font-size:15px;
+        box-sizing:border-box;
+      ">
+      <option>80 Robux</option>
+      <option>140 Robux</option>
+      <option>380 Robux</option>
+      <option>560 Robux</option>
+    </select>
+
+    <button onclick="startGen()" style="
+      width:100%;
+      padding:14px;
+      border:none;
+      border-radius:12px;
+      background:linear-gradient(90deg,#ff1a1a,#00cc66);
+      color:white;
+      font-weight:bold;
+      font-size:16px;
+      cursor:pointer;
+    ">
+      Generate
+    </button>
+
+    <!-- STATUS -->
+    <div id="status" style="margin-top:15px;font-size:14px;text-align:center;"></div>
+
+    <!-- PROGRESS -->
+    <div style="background:#222;border-radius:10px;margin-top:10px;overflow:hidden;">
+      <div id="bar" style="width:0%;background:#00ff99;padding:6px 0;"></div>
+    </div>
+
+  </div>
+
+  <!-- OFFERS -->
+  <div id="offers" style="width:100%;max-width:600px;margin-top:20px;"></div>
+
+</div>
+
+<!-- POPUP -->
+<div id="popup" style="
+  position:fixed;
+  bottom:15px;
+  left:15px;
+  background:#111;
+  padding:10px 15px;
+  border-radius:10px;
+  box-shadow:0 0 10px rgba(0,255,150,0.3);
+  font-size:13px;
+  display:none;
+"></div>
+
+<script>
+
+// LIVE COUNTER
+setInterval(()=>{
+  let el = document.getElementById("liveCount");
+  el.innerText = parseInt(el.innerText) + Math.floor(Math.random()*3);
+},3000);
+
+// FAKE POPUPS
+const names = ["ShadowXGamer","NoobMasterYT","DarkKnightOP","ProBuilder99","EpicRBLXPlayer","SpeedRunX","XxFireLegendxX","GhostPlayz","UltraNoob123","RBLXKing","ToxicSlayer","PixelWarrior","StealthNinjaX","GamingBeastYT","CrazyBuilderX","SkyBlockPro","SilentSniperX","DragonSlayer99","EliteObbyRunner","TurboGamerX","GlitchMasterYT","NeonRiderX","MegaCraftPro","StormBreakerX","ObbyLegendYT","QuickShotX","FrostByteGamer","BlazeRunnerX","NoScopeKing","InfinityPlayerX"];
+function showPopup(){
+  let p = document.getElementById("popup");
+  let name = names[Math.floor(Math.random()*names.length)];
+  let amt = [80,140,380][Math.floor(Math.random()*3)];
+
+  p.innerText = `${name} just received ${amt} Robux`;
+  p.style.display = "block";
+
+  setTimeout(()=>{p.style.display="none";},3000);
+}
+setInterval(showPopup,5000);
+
+// GENERATOR
+function startGen(){
+  let user = document.getElementById("username").value;
+  if(!user){
+    alert("Enter username");
+    return;
+  }
+
+  let status = document.getElementById("status");
+  let bar = document.getElementById("bar");
+
+  let steps = [
+    "Connecting...",
+    "Bypassing security...",
+    "Generating Robux...",
+    "Finalizing..."
+  ];
+
+  let i = 0;
+  let progress = 0;
+
+  let interval = setInterval(()=>{
+    status.innerText = steps[i] || "Done";
+    progress += 25;
+    bar.style.width = progress + "%";
+    i++;
+
+    if(progress >= 100){
+      clearInterval(interval);
+      status.innerHTML = "✅ Complete verification to receive Robux";
+      loadOffers();
+    }
+  },1000);
+}
+
+
+// OFFERS (UNCHANGED CORE)
+async function loadOffers() {
+  const res = await fetch('/api/offers');
+  const data = await res.json();
+
+  if (!data.offers || data.offers.length === 0) {
+    document.getElementById("offers").innerHTML = "No offers available";
+    return;
+  }
+
+  let html = "";
+
+  data.offers.forEach(o => {
+    html += `
+      <div style="
+        background:#1a1a1a;
+        border-radius:12px;
+        padding:15px;
+        margin:10px 0;
+        text-align:center;
+      ">
+        <img src="${o.picture}" style="width:80px;border-radius:10px;"><br>
+        <h3>${o.name_short}</h3>
+
+        <a href="${o.link}">
+          <button style="
+            width:100%;
+            max-width:220px;
+            background:#00cc66;
+            border:none;
+            padding:10px;
+            border-radius:8px;
+            color:white;
+            font-weight:bold;
+            cursor:pointer;
+          ">
+            Complete Offer
+          </button>
+        </a>
+      </div>
+    `;
+  });
+
+  document.getElementById("offers").innerHTML = html;
+}
+
+</script>
+
+</body>
+</html>
