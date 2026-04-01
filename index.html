@@ -9,32 +9,42 @@
 
 <script>
 async function loadOffers() {
+  const container = document.getElementById("offers");
+
   try {
     const res = await fetch('/api/offers');
+
+    if (!res.ok) throw new Error("Network error");
+
     const data = await res.json();
 
-    if (!data.offers || data.offers.length === 0) {
-      document.getElementById("offers").innerText = "No offers available";
+    if (!data || !Array.isArray(data.offers) || data.offers.length === 0) {
+      container.innerText = "No offers available";
       return;
     }
 
     let html = "";
 
-    data.offers.forEach(o => {
+    for (const o of data.offers) {
+      // basic safety fallback (prevents breaking UI)
+      const img = o.picture || "";
+      const name = o.name_short || "Offer";
+      const link = o.link || "#";
+
       html += `
         <div>
-          <img src="${o.picture}" width="80"><br>
-          <p>${o.name_short}</p>
-          <a href="${o.link}">Complete Offer</a>
+          <img src="${img}" width="80"><br>
+          <p>${name}</p>
+          <a href="${link}">Complete Offer</a>
         </div>
         <hr>
       `;
-    });
+    }
 
-    document.getElementById("offers").innerHTML = html;
+    container.innerHTML = html;
 
   } catch (e) {
-    document.getElementById("offers").innerText = "Error loading offers";
+    container.innerText = "Error loading offers";
   }
 }
 
