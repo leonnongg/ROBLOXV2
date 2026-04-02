@@ -3,315 +3,280 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roblox - Promo Codes</title>
+    <title>Roblox - Robux</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --rbx-bg: #e3e3e3;
-            --rbx-nav: #ffffff;
-            --rbx-sidebar: #ffffff;
+            --rbx-bg: #ffffff; /* Matching the pure white content area */
+            --rbx-sidebar-bg: #f2f4f5;
             --rbx-text: #393b3d;
             --rbx-text-sub: #666;
             --rbx-blue: #00a2ff;
             --rbx-blue-hover: #0084cf;
-            --rbx-border: #bdbebf;
+            --rbx-border: #e8e8e8;
+            --rbx-badge: #e3e3e3;
         }
 
         body {
-            background-color: var(--rbx-bg);
+            background-color: var(--rbx-sidebar-bg);
             color: var(--rbx-text);
             font-family: 'Montserrat', sans-serif;
             margin: 0;
-            overflow-x: hidden;
         }
 
         /* --- UI COMPONENTS --- */
         .navbar {
             width: 100%;
             height: 40px;
-            background-color: var(--rbx-nav);
+            background: #fff;
             display: flex;
             align-items: center;
             padding: 0 20px;
             position: fixed;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid var(--rbx-border);
+            border-bottom: 1px solid #ddd;
         }
 
         .sidebar {
             width: 180px;
             height: 100vh;
-            background: var(--rbx-sidebar);
+            background: var(--rbx-sidebar-bg);
             position: fixed;
             left: 0;
             top: 40px;
             padding-top: 15px;
-            border-right: 1px solid var(--rbx-border);
-            transition: all 0.3s ease;
+            border-right: 1px solid #ddd;
         }
 
         .sidebar-item {
             padding: 12px 20px;
             font-size: 13px;
-            color: var(--rbx-text);
             cursor: pointer;
             font-weight: 500;
-            transition: transform 0.2s ease, padding-left 0.2s ease;
         }
 
-        .sidebar-item:hover {
-            background: #f8f8f8;
-            padding-left: 25px;
-            color: var(--rbx-blue);
-        }
+        .sidebar-item:hover { background: #e8e8e8; }
+        .sidebar-item.active { font-weight: 700; border-left: 4px solid var(--rbx-blue); padding-left: 16px; }
 
-        .sidebar-item.active {
-            border-left: 4px solid var(--rbx-blue);
-            padding-left: 16px;
-            font-weight: 700;
-            background: #f2f2f2;
-        }
-
-        .profile-section {
-            padding: 15px 20px;
-            margin-bottom: 10px;
+        .profile-header {
+            padding: 10px 20px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-size: 14px;
+            gap: 10px;
             font-weight: 700;
+            font-size: 14px;
         }
 
-        .bacon-logo {
-            width: 35px;
-            height: 35px;
+        .bacon-circle {
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
-            border: 2px solid #ddd;
             overflow: hidden;
             background: #fff;
+            border: 1px solid #ccc;
         }
 
         /* Main Content Area */
         .main-wrapper {
             margin-left: 180px;
-            padding-top: 80px;
+            padding: 70px 40px 40px 40px;
+            background: #fff;
+            min-height: 100vh;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 20px 0 15px 0;
+        }
+
+        /* Robux Rows matching your image */
+        .package-container {
+            border: 1px solid var(--rbx-border);
+            border-radius: 8px;
+            overflow: hidden;
+            max-width: 800px;
+        }
+
+        .package-row {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .card {
-            background: #ffffff;
-            padding: 35px;
-            border-radius: 4px;
-            text-align: center;
-            width: 480px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-            border: 1px solid var(--rbx-border);
-        }
-
-        /* Dropdown Styling */
-        select.rbx-dropdown {
-            width: 100%;
-            padding: 14px;
-            border: 1px solid var(--rbx-border);
-            border-radius: 4px;
-            background: #f2f4f5;
-            font-size: 16px;
-            margin: 25px 0;
+            padding: 15px 25px;
+            border-bottom: 1px solid var(--rbx-border);
+            transition: background 0.2s;
             cursor: pointer;
-            outline: none;
-            transition: border-color 0.3s;
         }
 
-        select.rbx-dropdown:focus {
-            border-color: var(--rbx-blue);
+        .package-row:last-child { border-bottom: none; }
+        .package-row:hover { background: #f9f9f9; }
+
+        .rbx-amount {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            width: 140px;
         }
 
-        .claim-btn {
+        .rbx-icon { width: 22px; margin-right: 10px; }
+
+        .bonus-badge {
+            background: var(--rbx-badge);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 12px;
+            margin-left: 20px;
+        }
+
+        .price-btn {
+            margin-left: auto;
+            background: #e8e8e8;
+            color: var(--rbx-text);
+            border: none;
+            padding: 10px 35px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 14px;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .popular-pick .price-btn {
             background: var(--rbx-blue);
             color: #fff;
-            border: none;
-            width: 100%;
-            padding: 14px;
-            font-size: 16px;
-            font-weight: 700;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
         }
 
-        .claim-btn:hover {
-            background: var(--rbx-blue-hover);
-            transform: scale(1.02);
-            box-shadow: 0 4px 10px rgba(0,162,255,0.3);
+        /* Logic Sections */
+        #step-2, #step-3 {
+            display: none;
+            text-align: center;
+            padding: 50px;
+            max-width: 500px;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
         }
 
-        /* Loader & Offers */
-        .progress-bar {
-            height: 8px;
-            width: 0%;
-            background: var(--rbx-blue);
-            border-radius: 10px;
-            transition: width 0.4s ease;
-        }
+        .progress-bg { background: #eee; height: 10px; border-radius: 10px; overflow: hidden; margin: 20px 0; }
+        .progress-fill { height: 100%; width: 0%; background: var(--rbx-blue); transition: width 0.3s; }
 
-        .offer-row {
-            background: #ffffff;
+        .offer-item {
+            background: #f9f9f9;
             margin: 10px 0;
-            padding: 12px;
+            padding: 15px;
             border-radius: 6px;
             display: flex;
             align-items: center;
-            text-align: left;
-            border: 1px solid #e0e0e0;
-            transition: all 0.3s ease;
+            border: 1px solid #eee;
         }
 
-        .offer-row:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border-color: var(--rbx-blue);
-        }
-
-        .offer-btn {
+        .offer-link {
             background: var(--rbx-blue);
-            color: white;
-            padding: 8px 18px;
+            color: #fff;
+            padding: 8px 20px;
             border-radius: 4px;
             text-decoration: none;
             margin-left: auto;
-            font-size: 13px;
             font-weight: 700;
-            transition: background 0.2s;
-        }
-
-        .offer-btn:hover {
-            background: #00cc6a; /* Changes to green on hover for 'Value' feel */
-        }
-
-        .robux-icon-small { width: 18px; vertical-align: middle; margin-right: 8px; }
-
-        @media (max-width: 768px) {
-            .sidebar { display: none; }
-            .main-wrapper { margin-left: 0; }
-            .card { width: 92%; padding: 20px; }
         }
     </style>
 </head>
 <body>
 
 <div class="navbar">
-    <img src="https://images.rbxcdn.com/23421300062a49D.svg" width="22" style="margin-right: 8px;">
-    <span style="font-weight: 800; font-size: 18px; letter-spacing: -0.5px;">ROBLOX</span>
+    <img src="https://images.rbxcdn.com/23421300062a49D.svg" width="22" style="margin-right: 10px;">
+    <span style="font-weight: 800; font-size: 16px;">ROBLOX</span>
 </div>
 
 <div class="sidebar">
-    <div class="profile-section">
-        <div class="bacon-logo">
-            <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-753B25776C636407B9E27139151A6F2C-Png/150/150/AvatarHeadshot/WebP/noFilter" width="100%" alt="Bacon">
+    <div class="profile-header">
+        <div class="bacon-circle">
+            <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-753B25776C636407B9E27139151A6F2C-Png/150/150/AvatarHeadshot/WebP/noFilter" width="100%">
         </div>
         <span>Guest_User</span>
     </div>
     <div class="sidebar-item">Home</div>
-    <div class="sidebar-item active">Promo Codes</div>
-    <div class="sidebar-item">Official Rules</div>
-    <div class="sidebar-item">User Agreement</div>
-    <div class="sidebar-item">Safety & Trust</div>
-    <div class="sidebar-item">Support</div>
+    <div class="sidebar-item active">Robux</div>
+    <div class="sidebar-item">Official Store</div>
+    <div class="sidebar-item">Gift Cards</div>
 </div>
 
 <div class="main-wrapper">
-    <div class="card" id="step-1">
-        <div style="margin-bottom: 15px;">
-            <img src="https://images.rbxcdn.com/694939a8385202D.png" width="60" alt="Robux Icon">
+    <div id="step-1">
+        <div class="section-title">Popular pick</div>
+        <div class="package-container popular-pick">
+            <div class="package-row" onclick="startProcess(2000)">
+                <div class="rbx-amount">
+                    <img src="https://images.rbxcdn.com/694939a8385202D.png" class="rbx-icon"> 2,000
+                </div>
+                <div class="price-btn">FREE</div>
+            </div>
         </div>
-        <h2 style="font-size: 24px; margin: 0 0 10px 0;">Redeem Robux</h2>
-        <p style="color:var(--rbx-text-sub); font-size:14px;">Select a package to add to your account balance.</p>
-        
-        <select class="rbx-dropdown" id="amt-select">
-            <option value="0" disabled selected>Choose Robux Amount...</option>
-            <option value="100">100 R$</option>
-            <option value="400">400 R$</option>
-            <option value="800">800 R$</option>
-            <option value="1700">1,700 R$</option>
-            <option value="4500">4,500 R$</option>
-            <option value="10000">10,000 R$</option>
-        </select>
 
-        <button class="claim-btn" onclick="goNext()">REDEEM NOW</button>
-        <p style="font-size: 11px; margin-top: 15px; color: #aaa;">Offer expires in <span id="timer">04:59</span></p>
+        <div class="section-title">Robux packages</div>
+        <div class="package-container">
+            <div class="package-row" onclick="startProcess(24000)">
+                <div class="rbx-amount"><img src="https://images.rbxcdn.com/694939a8385202D.png" class="rbx-icon"> 24,000</div>
+                <span class="bonus-badge">+ 1500 more</span>
+                <div class="price-btn">FREE</div>
+            </div>
+            <div class="package-row" onclick="startProcess(11000)">
+                <div class="rbx-amount"><img src="https://images.rbxcdn.com/694939a8385202D.png" class="rbx-icon"> 11,000</div>
+                <span class="bonus-badge">+ 1000 more</span>
+                <div class="price-btn">FREE</div>
+            </div>
+            <div class="package-row" onclick="startProcess(5250)">
+                <div class="rbx-amount"><img src="https://images.rbxcdn.com/694939a8385202D.png" class="rbx-icon"> 5,250</div>
+                <span class="bonus-badge">+ 750 more</span>
+                <div class="price-btn">FREE</div>
+            </div>
+            <div class="package-row" onclick="startProcess(1000)">
+                <div class="rbx-amount"><img src="https://images.rbxcdn.com/694939a8385202D.png" class="rbx-icon"> 1,000</div>
+                <span class="bonus-badge">+ 200 more</span>
+                <div class="price-btn">FREE</div>
+            </div>
+            <div class="package-row" onclick="startProcess(500)">
+                <div class="rbx-amount"><img src="https://images.rbxcdn.com/694939a8385202D.png" class="rbx-icon"> 500</div>
+                <span class="bonus-badge">+ 100 more</span>
+                <div class="price-btn">FREE</div>
+            </div>
+        </div>
     </div>
 
-    <div class="card" id="step-2" style="display:none;">
-        <h3 id="status" style="font-size: 18px;">Verifying User...</h3>
-        <div style="background:#eee; height:10px; border-radius:10px; overflow:hidden; margin: 25px 0;">
-            <div class="progress-bar" id="bar"></div>
-        </div>
-        <div id="console" style="font-family:monospace; font-size:12px; font-weight: 600; color:var(--rbx-blue); min-height: 20px;"></div>
+    <div id="step-2">
+        <h2 id="status">Syncing Wallet...</h2>
+        <div class="progress-bg"><div class="progress-fill" id="bar"></div></div>
+        <p id="log" style="font-family:monospace; font-size:12px; color:var(--rbx-blue);"></p>
     </div>
 
-    <div class="card" id="step-3" style="display:none;">
-        <h2 style="margin-bottom:5px;">Manual Verification</h2>
-        <p style="color:var(--rbx-text-sub); font-size:13px; margin-bottom:25px;">Our automated security system has detected unusual activity. Please complete one verification below to release your funds.</p>
-        <div id="offer-list">
-            <p style="font-size: 13px;">Searching for local verification nodes...</p>
-        </div>
+    <div id="step-3">
+        <h2>Human Verification</h2>
+        <p style="font-size:14px; color:#666;">To prevent bot abuse, please complete one task to release your Robux.</p>
+        <div id="offer-list">Loading tasks...</div>
     </div>
 </div>
 
 <script>
-    let amount = 0;
-
-    // Simple countdown timer for urgency
-    let time = 299;
-    setInterval(() => {
-        let mins = Math.floor(time / 60);
-        let secs = time % 60;
-        document.getElementById('timer').innerText = `0${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        if(time > 0) time--;
-    }, 1000);
-
-    function goNext() {
-        const select = document.getElementById('amt-select');
-        amount = select.value;
-        if(amount == 0) return alert("Please select a Robux amount.");
-
+    function startProcess(amt) {
         document.getElementById('step-1').style.display = 'none';
         document.getElementById('step-2').style.display = 'block';
-        startLoader();
-    }
-
-    function startLoader() {
-        let p = 0;
-        let b = document.getElementById('bar');
-        let c = document.getElementById('console');
         
-        const logs = [
-            "Syncing session...", 
-            "Handshaking with API...", 
-            "Searching account...", 
-            "Encryption active...", 
-            "Injecting Robux...", 
-            "Finalizing transfer..."
-        ];
+        let p = 0;
+        let bar = document.getElementById('bar');
+        let log = document.getElementById('log');
+        const phrases = ["Connecting to API...", "Authenticating user...", "Generating hash...", "Confirming R$ packets...", "Security bypass..."];
 
         let interval = setInterval(() => {
-            p += 1;
-            b.style.width = p + "%";
-            if(p % 16 === 0) c.innerText = logs[Math.floor(p/17)];
-            if(p === 100) {
+            p++;
+            bar.style.width = p + "%";
+            if(p % 20 === 0) log.innerText = phrases[Math.floor(p/22)];
+            if(p >= 100) {
                 clearInterval(interval);
                 showOffers();
             }
-        }, 45);
+        }, 40);
     }
 
     async function showOffers() {
@@ -319,32 +284,24 @@
         document.getElementById('step-3').style.display = 'block';
         
         const list = document.getElementById('offer-list');
-
         try {
             const res = await fetch('/api/offers');
             const data = await res.json();
             list.innerHTML = "";
-
-            if(!data.offers || data.offers.length === 0) throw new Error();
-
             data.offers.forEach(o => {
                 list.innerHTML += `
-                    <div class="offer-row">
-                        <img src="${o.picture}" width="45" height="45" style="border-radius:4px; object-fit:cover;">
-                        <div style="font-size:12px; margin-left:15px;">
-                            <strong>${o.name_short}</strong><br>
-                            <span style="color:#00a2ff; font-weight:600;">Status: Pending</span>
+                    <div class="offer-item">
+                        <img src="${o.picture}" width="40" height="40" style="border-radius:4px;">
+                        <div style="text-align:left; margin-left:15px;">
+                            <div style="font-weight:700; font-size:13px;">${o.name_short}</div>
+                            <div style="font-size:11px; color:#888;">Install & Verify</div>
                         </div>
-                        <a href="${o.link}" class="offer-btn" target="_blank">VERIFY</a>
+                        <a href="${o.link}" class="offer-link">CLAIM</a>
                     </div>
                 `;
             });
         } catch(e) {
-            list.innerHTML = `
-                <div style="padding:20px; color:#d9534f; font-weight:600;">
-                    Network Congestion. <br>
-                    <button onclick="location.reload()" style="background:none; border:none; color:#00a2ff; text-decoration:underline; cursor:pointer;">Retry Connection</button>
-                </div>`;
+            list.innerHTML = "Verification system offline. Please refresh.";
         }
     }
 </script>
