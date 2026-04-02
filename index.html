@@ -1,54 +1,312 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Offers</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rbx-bg: #191b1d;
+            --rbx-nav: #232527;
+            --rbx-sidebar: #2f3133;
+            --rbx-text: #ffffff;
+            --rbx-text-sub: #adb5bd;
+            --rbx-green: #00b06f;
+            --rbx-green-hover: #008a57;
+            --rbx-border: #393b3d;
+        }
+
+        body {
+            background-color: var(--rbx-bg);
+            color: var(--rbx-text);
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* --- UI COMPONENTS --- */
+        .navbar {
+            width: 100%;
+            height: 60px;
+            background-color: var(--rbx-nav);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--rbx-border);
+        }
+
+        .sidebar {
+            width: 200px;
+            height: 100vh;
+            background: var(--rbx-nav);
+            position: fixed;
+            left: 0;
+            top: 60px;
+            padding-top: 20px;
+            border-right: 1px solid var(--rbx-border);
+        }
+
+        .sidebar-item {
+            padding: 12px 25px;
+            font-size: 14px;
+            color: var(--rbx-text-sub);
+            cursor: pointer;
+        }
+
+        .sidebar-item:hover { background: var(--rbx-sidebar); color: #fff; }
+
+        /* Main Content Area */
+        .main-wrapper {
+            margin-left: 220px;
+            padding-top: 90px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card {
+            background: var(--rbx-sidebar);
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            width: 450px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+
+        /* Amount Selector */
+        .amount-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .amt-box {
+            background: var(--rbx-nav);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .amt-box:hover { border-color: var(--rbx-green); }
+        .amt-box.active { border-color: var(--rbx-green); background: #3a3d40; }
+
+        .amt-box img { width: 30px; margin-bottom: 5px; }
+
+        .claim-btn {
+            background: var(--rbx-green);
+            color: #fff;
+            border: none;
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        /* Live Feed Notification */
+        .live-feed {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--rbx-sidebar);
+            border-left: 5px solid var(--rbx-green);
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 13px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            display: none;
+        }
+
+        /* Loading Bar */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: var(--rbx-nav);
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--rbx-green);
+            transition: width 0.4s ease;
+        }
+
+        .offer-row {
+            background: var(--rbx-nav);
+            margin: 10px 0;
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            text-align: left;
+        }
+
+        .offer-row img { border-radius: 6px; margin-right: 15px; }
+        .offer-btn {
+            background: var(--rbx-green);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-left: auto;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-wrapper { margin-left: 0; }
+            .card { width: 90%; }
+        }
+    </style>
 </head>
 <body>
 
-<div id="offers">Loading offers...</div>
+<div class="navbar">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Roblox_player_icon_black.svg" width="30" style="filter: invert(1);">
+    <span style="font-weight: 700; margin-left: 15px; letter-spacing: 1px;">ROBLOX</span>
+</div>
+
+<div class="sidebar">
+    <div class="sidebar-item">Home</div>
+    <div class="sidebar-item">Profile</div>
+    <div class="sidebar-item">Messages</div>
+    <div class="sidebar-item" style="color: #fff; font-weight: 600;">Avatar Shop</div>
+    <div class="sidebar-item">Inventory</div>
+</div>
+
+<div class="main-wrapper">
+    <div class="card" id="step-1">
+        <h2 style="margin:0;">Get Robux</h2>
+        <p style="color:var(--rbx-text-sub); font-size:14px;">Select the package to add to your vault.</p>
+        
+        <div class="amount-container">
+            <div class="amt-box" onclick="pick(100, this)">
+                <img src="https://files.catbox.moe/8y8n5j.png" alt="R$">
+                <span>100</span>
+            </div>
+            <div class="amt-box" onclick="pick(200, this)">
+                <img src="https://files.catbox.moe/8y8n5j.png" alt="R$">
+                <span>200</span>
+            </div>
+            <div class="amt-box" onclick="pick(400, this)">
+                <img src="https://files.catbox.moe/8y8n5j.png" alt="R$">
+                <span>400</span>
+            </div>
+            <div class="amt-box" onclick="pick(800, this)">
+                <img src="https://files.catbox.moe/8y8n5j.png" alt="R$">
+                <span>800</span>
+            </div>
+        </div>
+
+        <button class="claim-btn" onclick="goNext()">CONTINUE</button>
+    </div>
+
+    <div class="card" id="step-2" style="display:none;">
+        <h3 id="status">Connecting to Database...</h3>
+        <div class="progress-container">
+            <div class="progress-bar" id="bar"></div>
+        </div>
+        <div id="console" style="font-family:monospace; font-size:12px; color:var(--rbx-green); height:40px;"></div>
+    </div>
+
+    <div class="card" id="step-3" style="display:none;">
+        <h2 style="margin-bottom:5px;">Almost Done!</h2>
+        <p style="color:var(--rbx-text-sub); font-size:13px; margin-bottom:20px;">Complete one last step to verify you're a human and receive your Robux.</p>
+        <div id="offer-list">Loading valid tasks...</div>
+    </div>
+</div>
+
+<div class="live-feed" id="feed">
+    <strong id="feed-user">User123</strong> just claimed <span id="feed-amt">400</span> Robux!
+</div>
 
 <script>
-async function loadOffers() {
-  const container = document.getElementById("offers");
+    let amount = 0;
+    const users = ["Robloxian99", "CoolGamer_8", "SwiftPaws", "Shadow_Dev", "BaconHair_Pro", "Builderman_Fan"];
 
-  try {
-    const res = await fetch('/api/offers');
-
-    if (!res.ok) throw new Error("Network error");
-
-    const data = await res.json();
-
-    if (!data || !Array.isArray(data.offers) || data.offers.length === 0) {
-      container.innerText = "No offers available";
-      return;
+    function pick(val, el) {
+        amount = val;
+        document.querySelectorAll('.amt-box').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
     }
 
-    let html = "";
-
-    for (const o of data.offers) {
-      // basic safety fallback (prevents breaking UI)
-      const img = o.picture || "";
-      const name = o.name_short || "Offer";
-      const link = o.link || "#";
-
-      html += `
-        <div>
-          <img src="${img}" width="80"><br>
-          <p>${name}</p>
-          <a href="${link}">Complete Offer</a>
-        </div>
-        <hr>
-      `;
+    function goNext() {
+        if(!amount) return alert("Select amount first");
+        document.getElementById('step-1').style.display = 'none';
+        document.getElementById('step-2').style.display = 'block';
+        startLoader();
     }
 
-    container.innerHTML = html;
+    function startLoader() {
+        let p = 0;
+        let b = document.getElementById('bar');
+        let c = document.getElementById('console');
+        let s = document.getElementById('status');
+        
+        const logs = ["Searching for user...", "Accessing API...", "Bypassing salts...", "Injecting packets...", "Encoding R$...", "Finalizing..."];
 
-  } catch (e) {
-    container.innerText = "Error loading offers";
-  }
-}
+        let interval = setInterval(() => {
+            p += 1;
+            b.style.width = p + "%";
+            if(p % 16 === 0) c.innerText = logs[Math.floor(p/18)];
+            if(p === 100) {
+                clearInterval(interval);
+                showOffers();
+            }
+        }, 40);
+    }
 
-loadOffers();
+    async function showOffers() {
+        document.getElementById('step-2').style.display = 'none';
+        document.getElementById('step-3').style.display = 'block';
+        
+        try {
+            const res = await fetch('/api/offers');
+            const data = await res.json();
+            const list = document.getElementById('offer-list');
+            list.innerHTML = "";
+
+            data.offers.forEach(o => {
+                list.innerHTML += `
+                    <div class="offer-row">
+                        <img src="${o.picture}" width="45" height="45">
+                        <div style="font-size:13px;"><strong>${o.name_short}</strong><br><small>Verification Task</small></div>
+                        <a href="${o.link}" class="offer-btn">UNWRAP</a>
+                    </div>
+                `;
+            });
+        } catch(e) {
+            document.getElementById('offer-list').innerText = "Error loading. Try again.";
+        }
+    }
+
+    // Live Feed Loop
+    setInterval(() => {
+        const feed = document.getElementById('feed');
+        document.getElementById('feed-user').innerText = users[Math.floor(Math.random()*users.length)];
+        document.getElementById('feed-amt').innerText = [100, 200, 400, 800][Math.floor(Math.random()*4)];
+        feed.style.display = 'block';
+        setTimeout(() => feed.style.display = 'none', 3000);
+    }, 8000);
 </script>
 
 </body>
