@@ -1,309 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roblox - Robux</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --rbx-bg: #ffffff; /* Matching the pure white content area */
-            --rbx-sidebar-bg: #f2f4f5;
-            --rbx-text: #393b3d;
-            --rbx-text-sub: #666;
-            --rbx-blue: #00a2ff;
-            --rbx-blue-hover: #0084cf;
-            --rbx-border: #e8e8e8;
-            --rbx-badge: #e3e3e3;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roblox UI Demo</title>
 
-        body {
-            background-color: var(--rbx-sidebar-bg);
-            color: var(--rbx-text);
-            font-family: 'Montserrat', sans-serif;
-            margin: 0;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 
-        /* --- UI COMPONENTS --- */
-        .navbar {
-            width: 100%;
-            height: 40px;
-            background: #fff;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            position: fixed;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid #ddd;
-        }
+<style>
+body {
+    margin:0;
+    font-family: 'Montserrat', sans-serif;
+    background:#f2f4f5;
+}
 
-        .sidebar {
-            width: 180px;
-            height: 100vh;
-            background: var(--rbx-sidebar-bg);
-            position: fixed;
-            left: 0;
-            top: 40px;
-            padding-top: 15px;
-            border-right: 1px solid #ddd;
-        }
+/* NAVBAR */
+.navbar {
+    height:50px;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    padding:0 20px;
+    border-bottom:1px solid #ddd;
+}
 
-        .sidebar-item {
-            padding: 12px 20px;
-            font-size: 13px;
-            cursor: pointer;
-            font-weight: 500;
-        }
+.navbar img {
+    width:28px;
+    margin-right:10px;
+}
 
-        .sidebar-item:hover { background: #e8e8e8; }
-        .sidebar-item.active { font-weight: 700; border-left: 4px solid var(--rbx-blue); padding-left: 16px; }
+/* SIDEBAR */
+.sidebar {
+    width:200px;
+    position:fixed;
+    top:50px;
+    bottom:0;
+    background:#f8f9fa;
+    border-right:1px solid #ddd;
+}
 
-        .profile-header {
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 14px;
-        }
+.sidebar div {
+    padding:12px 20px;
+    cursor:pointer;
+}
 
-        .bacon-circle {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            overflow: hidden;
-            background: #fff;
-            border: 1px solid #ccc;
-        }
+.sidebar div:hover {
+    background:#eaeaea;
+}
 
-        /* Main Content Area */
-        .main-wrapper {
-            margin-left: 180px;
-            padding: 70px 40px 40px 40px;
-            background: #fff;
-            min-height: 100vh;
-        }
+/* MAIN */
+.main {
+    margin-left:200px;
+    padding:30px;
+}
 
-        .section-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin: 20px 0 15px 0;
-        }
+/* CARD */
+.card {
+    background:#fff;
+    padding:30px;
+    border-radius:10px;
+    max-width:600px;
+    margin:auto;
+    box-shadow:0 2px 10px rgba(0,0,0,0.05);
+}
 
-        /* Robux Rows matching your image */
-        .package-container {
-            border: 1px solid var(--rbx-border);
-            border-radius: 8px;
-            overflow: hidden;
-            max-width: 800px;
-        }
+/* INPUT */
+input {
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    margin-top:10px;
+}
 
-        .package-row {
-            display: flex;
-            align-items: center;
-            padding: 15px 25px;
-            border-bottom: 1px solid var(--rbx-border);
-            transition: background 0.2s;
-            cursor: pointer;
-        }
+/* BUTTON */
+button {
+    margin-top:15px;
+    padding:12px;
+    width:100%;
+    background:#00a2ff;
+    color:#fff;
+    border:none;
+    border-radius:6px;
+    font-weight:700;
+    cursor:pointer;
+}
 
-        .package-row:last-child { border-bottom: none; }
-        .package-row:hover { background: #f9f9f9; }
+button:hover {
+    background:#0084cf;
+}
 
-        .rbx-amount {
-            font-size: 24px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            width: 140px;
-        }
+/* PACKAGES */
+.package {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px;
+    border:1px solid #eee;
+    border-radius:8px;
+    margin-top:10px;
+    cursor:pointer;
+}
 
-        .rbx-icon { width: 22px; margin-right: 10px; }
+.package:hover {
+    background:#f9f9f9;
+}
 
-        .bonus-badge {
-            background: var(--rbx-badge);
-            font-size: 11px;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 12px;
-            margin-left: 20px;
-        }
-
-        .price-btn {
-            margin-left: auto;
-            background: #e8e8e8;
-            color: var(--rbx-text);
-            border: none;
-            padding: 10px 35px;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 14px;
-            min-width: 120px;
-            text-align: center;
-        }
-
-        .popular-pick .price-btn {
-            background: var(--rbx-blue);
-            color: #fff;
-        }
-
-        /* Logic Sections */
-        #step-2, #step-3 {
-            display: none;
-            text-align: center;
-            padding: 50px;
-            max-width: 500px;
-            margin: 0 auto;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-        }
-
-        .progress-bg { background: #eee; height: 10px; border-radius: 10px; overflow: hidden; margin: 20px 0; }
-        .progress-fill { height: 100%; width: 0%; background: var(--rbx-blue); transition: width 0.3s; }
-
-        .offer-item {
-            background: #f9f9f9;
-            margin: 10px 0;
-            padding: 15px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            border: 1px solid #eee;
-        }
-
-        .offer-link {
-            background: var(--rbx-blue);
-            color: #fff;
-            padding: 8px 20px;
-            border-radius: 4px;
-            text-decoration: none;
-            margin-left: auto;
-            font-weight: 700;
-        }
-    </style>
+.hidden {
+    display:none;
+}
+</style>
 </head>
+
 <body>
 
 <div class="navbar">
-    <img src="https://images.rbxcdn.com/23421300062a49D.svg" width="22" style="margin-right: 10px;">
-    <span style="font-weight: 800; font-size: 16px;">ROBLOX</span>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Roblox_Logo.svg">
+    <b>ROBLOX</b>
 </div>
 
 <div class="sidebar">
-    <div class="profile-header">
-        <div class="bacon-circle">
-            <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-753B25776C636407B9E27139151A6F2C-Png/150/150/AvatarHeadshot/WebP/noFilter" width="100%">
-        </div>
-        <span>Guest_User</span>
-    </div>
-    <div class="sidebar-item">Home</div>
-    <div class="sidebar-item active">Robux</div>
-    <div class="sidebar-item">Official Store</div>
-    <div class="sidebar-item">Gift Cards</div>
+    <div>Home</div>
+    <div><b>Robux</b></div>
+    <div>Store</div>
 </div>
 
-<div class="main-wrapper">
-    <div id="step-1">
-        <div class="section-title">Popular pick</div>
-        <div class="package-container popular-pick">
-            <div class="package-row" onclick="startProcess(2000)">
-                <div class="rbx-amount">
-                    <img src="https://images.rbxcdn.com/694939a8385202D.png" class="rbx-icon"> 2,000
-                </div>
-                <div class="price-btn">FREE</div>
-            </div>
-        </div>
+<div class="main">
 
-        <div class="section-title">Robux packages</div>
-        <div class="package-container">
-            <div class="package-row" onclick="startProcess(24000)">
-                <div class="rbx-amount"><img src="https://images.rbxcdn.com/694939a8385202D.png" class="rbx-icon"> 24,000</div>
-                <span class="bonus-badge">+ 1500 more</span>
-                <div class="price-btn">FREE</div>
-            </div>
-            <div class="package-row" onclick="startProcess(11000)">
-                <div class="rbx-amount"><img src="https://images.rbxcdn.com/694939a8385202D.png" class="rbx-icon"> 11,000</div>
-                <span class="bonus-badge">+ 1000 more</span>
-                <div class="price-btn">FREE</div>
-            </div>
-            <div class="package-row" onclick="startProcess(5250)">
-                <div class="rbx-amount"><img src="https://images.rbxcdn.com/694939a8385202D.png" class="rbx-icon"> 5,250</div>
-                <span class="bonus-badge">+ 750 more</span>
-                <div class="price-btn">FREE</div>
-            </div>
-            <div class="package-row" onclick="startProcess(1000)">
-                <div class="rbx-amount"><img src="https://images.rbxcdn.com/694939a8385202D.png" class="rbx-icon"> 1,000</div>
-                <span class="bonus-badge">+ 200 more</span>
-                <div class="price-btn">FREE</div>
-            </div>
-            <div class="package-row" onclick="startProcess(500)">
-                <div class="rbx-amount"><img src="https://images.rbxcdn.com/694939a8385202D.png" class="rbx-icon"> 500</div>
-                <span class="bonus-badge">+ 100 more</span>
-                <div class="price-btn">FREE</div>
-            </div>
-        </div>
-    </div>
+<!-- STEP 1 -->
+<div id="step1" class="card">
+    <h2>Enter Username</h2>
+    <input type="text" id="username" placeholder="Roblox Username">
+    <button onclick="goToStep2()">Continue</button>
+</div>
 
-    <div id="step-2">
-        <h2 id="status">Syncing Wallet...</h2>
-        <div class="progress-bg"><div class="progress-fill" id="bar"></div></div>
-        <p id="log" style="font-family:monospace; font-size:12px; color:var(--rbx-blue);"></p>
-    </div>
+<!-- STEP 2 -->
+<div id="step2" class="card hidden">
+    <h2>Select Robux Package</h2>
 
-    <div id="step-3">
-        <h2>Human Verification</h2>
-        <p style="font-size:14px; color:#666;">To prevent bot abuse, please complete one task to release your Robux.</p>
-        <div id="offer-list">Loading tasks...</div>
-    </div>
+    <div class="package" onclick="selectRobux(500)">500 Robux</div>
+    <div class="package" onclick="selectRobux(1000)">1,000 Robux</div>
+    <div class="package" onclick="selectRobux(5250)">5,250 Robux</div>
+    <div class="package" onclick="selectRobux(11000)">11,000 Robux</div>
+    <div class="package" onclick="selectRobux(24000)">24,000 Robux</div>
+
+</div>
+
+<!-- STEP 3 -->
+<div id="step3" class="card hidden">
+    <h2>Summary</h2>
+    <p><b>Username:</b> <span id="finalUser"></span></p>
+    <p><b>Selected:</b> <span id="finalAmount"></span> Robux</p>
+
+    <button onclick="reset()">Done</button>
+</div>
+
 </div>
 
 <script>
-    function startProcess(amt) {
-        document.getElementById('step-1').style.display = 'none';
-        document.getElementById('step-2').style.display = 'block';
-        
-        let p = 0;
-        let bar = document.getElementById('bar');
-        let log = document.getElementById('log');
-        const phrases = ["Connecting to API...", "Authenticating user...", "Generating hash...", "Confirming R$ packets...", "Security bypass..."];
+let selectedAmount = 0;
 
-        let interval = setInterval(() => {
-            p++;
-            bar.style.width = p + "%";
-            if(p % 20 === 0) log.innerText = phrases[Math.floor(p/22)];
-            if(p >= 100) {
-                clearInterval(interval);
-                showOffers();
-            }
-        }, 40);
+function goToStep2() {
+    const username = document.getElementById("username").value.trim();
+
+    if(!username) {
+        alert("Enter username first");
+        return;
     }
 
-    async function showOffers() {
-        document.getElementById('step-2').style.display = 'none';
-        document.getElementById('step-3').style.display = 'block';
-        
-        const list = document.getElementById('offer-list');
-        try {
-            const res = await fetch('/api/offers');
-            const data = await res.json();
-            list.innerHTML = "";
-            data.offers.forEach(o => {
-                list.innerHTML += `
-                    <div class="offer-item">
-                        <img src="${o.picture}" width="40" height="40" style="border-radius:4px;">
-                        <div style="text-align:left; margin-left:15px;">
-                            <div style="font-weight:700; font-size:13px;">${o.name_short}</div>
-                            <div style="font-size:11px; color:#888;">Install & Verify</div>
-                        </div>
-                        <a href="${o.link}" class="offer-link">CLAIM</a>
-                    </div>
-                `;
-            });
-        } catch(e) {
-            list.innerHTML = "Verification system offline. Please refresh.";
-        }
-    }
+    document.getElementById("step1").classList.add("hidden");
+    document.getElementById("step2").classList.remove("hidden");
+}
+
+function selectRobux(amount) {
+    selectedAmount = amount;
+
+    const username = document.getElementById("username").value;
+
+    document.getElementById("finalUser").innerText = username;
+    document.getElementById("finalAmount").innerText = amount;
+
+    document.getElementById("step2").classList.add("hidden");
+    document.getElementById("step3").classList.remove("hidden");
+}
+
+function reset() {
+    location.reload();
+}
 </script>
 
 </body>
