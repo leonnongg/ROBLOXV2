@@ -1,44 +1,289 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Offers</title>
+  <title>Robux Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Roblox-like font -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: #121417;
+      color: white;
+      display: flex;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      background: #1b1f23;
+      height: 100vh;
+      padding: 20px;
+      border-right: 1px solid #2a2f35;
+    }
+
+    .sidebar h2 {
+      margin-bottom: 30px;
+      font-weight: 700;
+    }
+
+    .menu-item {
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      color: #b0b3b8;
+      transition: 0.2s;
+    }
+
+    .menu-item:hover {
+      background: #2a2f35;
+      color: white;
+    }
+
+    /* Main */
+    .main {
+      flex: 1;
+      padding: 30px;
+      animation: fade 0.4s ease;
+    }
+
+    @keyframes fade {
+      from {opacity:0; transform: translateY(10px);}
+      to {opacity:1;}
+    }
+
+    h1, h2 {
+      font-weight: 700;
+    }
+
+    /* Inputs */
+    input {
+      padding: 14px;
+      width: 260px;
+      border-radius: 8px;
+      border: none;
+      background: #1f2328;
+      color: white;
+      outline: none;
+    }
+
+    button {
+      padding: 14px 22px;
+      border: none;
+      border-radius: 8px;
+      background: #00c853;
+      color: white;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.2s;
+      font-weight: 600;
+    }
+
+    button:hover {
+      background: #00e676;
+      transform: scale(1.05);
+    }
+
+    /* Cards */
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: #1f2328;
+      padding: 25px;
+      margin: 10px;
+      border-radius: 14px;
+      width: 160px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.25s;
+      border: 1px solid #2a2f35;
+    }
+
+    .card:hover {
+      transform: translateY(-6px) scale(1.05);
+      border-color: #00c853;
+      background: #2a2f35;
+    }
+
+    /* Loader */
+    .loader {
+      border: 6px solid #2a2f35;
+      border-top: 6px solid #00c853;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* Offers */
+    .offer {
+      background: #1f2328;
+      padding: 15px;
+      border-radius: 12px;
+      margin: 10px 0;
+      border: 1px solid #2a2f35;
+    }
+
+    /* Mobile feel */
+    @media(max-width: 768px){
+      .sidebar {display:none;}
+      body {flex-direction: column;}
+      .main {padding: 15px;}
+    }
+  </style>
 </head>
+
 <body>
 
-<div id="offers">Loading offers...</div>
+<!-- 🔊 SOUND EFFECTS -->
+<audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"></audio>
+<audio id="successSound" src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3"></audio>
+
+<div class="sidebar">
+  <h2>Roblox Panel</h2>
+  <div class="menu-item" onclick="nav('main')">🎮 Robux</div>
+  <div class="menu-item" onclick="nav('user')">👤 User</div>
+  <div class="menu-item" onclick="nav('support')">💬 Support</div>
+</div>
+
+<div class="main">
+
+  <!-- STEP 1 -->
+  <div id="main">
+    <h1>Enter Username</h1>
+    <input id="username" placeholder="Roblox Username"><br>
+    <button onclick="start()">Continue</button>
+  </div>
+
+  <!-- LOADING -->
+  <div id="loading" class="hidden">
+    <h2>Verifying...</h2>
+    <div class="loader"></div>
+    <p id="loadText">Starting...</p>
+  </div>
+
+  <!-- SELECT -->
+  <div id="select" class="hidden">
+    <h2>Select Robux</h2>
+    <div class="cards">
+      <div class="card" onclick="choose()">100</div>
+      <div class="card" onclick="choose()">200</div>
+      <div class="card" onclick="choose()">300</div>
+      <div class="card" onclick="choose()">400</div>
+    </div>
+  </div>
+
+  <!-- TASKS -->
+  <div id="tasks" class="hidden">
+    <h2>Complete Tasks</h2>
+    <div id="offers">Loading...</div>
+  </div>
+
+  <!-- USER -->
+  <div id="user" class="hidden">
+    <h2>User</h2>
+    <p id="uname"></p>
+    <p id="uid"></p>
+  </div>
+
+  <!-- SUPPORT -->
+  <div id="support" class="hidden">
+    <h2>Support</h2>
+    <p>24/7 Support Available</p>
+  </div>
+
+</div>
 
 <script>
-async function loadOffers() {
-  try {
+let username = "";
+
+// 🔊 Sound
+function playClick(){ document.getElementById("clickSound").play(); }
+function playSuccess(){ document.getElementById("successSound").play(); }
+
+// Nav
+function nav(id){
+  playClick();
+  document.querySelectorAll('.main > div').forEach(d=>d.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+
+// Start
+function start(){
+  playClick();
+  username = document.getElementById("username").value;
+  if(!username) return alert("Enter username");
+
+  nav("loading");
+
+  setTimeout(()=>setLoad("Checking username..."),800);
+  setTimeout(()=>setLoad("Connecting..."),1600);
+  setTimeout(()=>setLoad("Verified"),2400);
+
+  setTimeout(()=>{
+    playSuccess();
+    nav("select");
+    genUser();
+  },3000);
+}
+
+function setLoad(t){
+  document.getElementById("loadText").innerText = t;
+}
+
+// User
+function genUser(){
+  document.getElementById("uname").innerText = "Username: "+username;
+  document.getElementById("uid").innerText = "User ID: "+Math.floor(Math.random()*999999999);
+}
+
+// Select
+function choose(){
+  playClick();
+  nav("tasks");
+  loadOffers();
+}
+
+// API (UNCHANGED)
+async function loadOffers(){
+  try{
     const res = await fetch('/api/offers');
     const data = await res.json();
 
-    if (!data.offers || data.offers.length === 0) {
-      document.getElementById("offers").innerText = "No offers available";
-      return;
-    }
-
-    let html = "";
-
-    data.offers.forEach(o => {
-      html += `
-        <div>
-          <img src="${o.picture}" width="80"><br>
-          <p>${o.name_short}</p>
-          <a href="${o.link}">Complete Offer</a>
-        </div>
-        <hr>
-      `;
+    let html="";
+    data.offers.forEach(o=>{
+      html+=`
+      <div class="offer">
+        <img src="${o.picture}" width="80"><br>
+        <b>${o.name_short}</b><br><br>
+        <a href="${o.link}" target="_blank">
+          <button onclick="playClick()">Complete</button>
+        </a>
+      </div>`;
     });
 
     document.getElementById("offers").innerHTML = html;
 
-  } catch (e) {
-    document.getElementById("offers").innerText = "Error loading offers";
+  }catch{
+    document.getElementById("offers").innerText="Error loading offers";
   }
 }
-
-loadOffers();
 </script>
 
 </body>
