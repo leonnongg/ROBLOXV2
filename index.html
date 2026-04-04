@@ -4,25 +4,24 @@
   <title>Robux Panel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Roblox-like font -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
     body {
       margin: 0;
       font-family: 'Montserrat', sans-serif;
-      background: #121417;
-      color: white;
+      background: #181a1b;
+      color: #e4e6eb;
       display: flex;
     }
 
     /* Sidebar */
     .sidebar {
       width: 240px;
-      background: #1b1f23;
+      background: #202225;
       height: 100vh;
       padding: 20px;
-      border-right: 1px solid #2a2f35;
+      border-right: 1px solid #2d2f33;
     }
 
     .sidebar h2 {
@@ -36,11 +35,10 @@
       margin-bottom: 10px;
       cursor: pointer;
       color: #b0b3b8;
-      transition: 0.2s;
     }
 
     .menu-item:hover {
-      background: #2a2f35;
+      background: #2d2f33;
       color: white;
     }
 
@@ -48,44 +46,38 @@
     .main {
       flex: 1;
       padding: 30px;
-      animation: fade 0.4s ease;
     }
 
-    @keyframes fade {
-      from {opacity:0; transform: translateY(10px);}
-      to {opacity:1;}
+    .panel {
+      background: #202225;
+      padding: 25px;
+      border-radius: 12px;
+      border: 1px solid #2d2f33;
+      max-width: 600px;
     }
 
-    h1, h2 {
-      font-weight: 700;
-    }
-
-    /* Inputs */
     input {
       padding: 14px;
-      width: 260px;
+      width: 100%;
       border-radius: 8px;
       border: none;
-      background: #1f2328;
+      background: #2d2f33;
       color: white;
-      outline: none;
+      margin-top: 10px;
     }
 
     button {
-      padding: 14px 22px;
-      border: none;
+      padding: 12px 18px;
       border-radius: 8px;
-      background: #00c853;
+      border: none;
+      background: #5865f2;
       color: white;
-      cursor: pointer;
       margin-top: 10px;
-      transition: 0.2s;
-      font-weight: 600;
+      cursor: pointer;
     }
 
     button:hover {
-      background: #00e676;
-      transform: scale(1.05);
+      background: #6b74ff;
     }
 
     /* Cards */
@@ -95,190 +87,190 @@
     }
 
     .card {
-      background: #1f2328;
-      padding: 25px;
+      background: #2d2f33;
+      padding: 20px;
       margin: 10px;
-      border-radius: 14px;
-      width: 160px;
+      border-radius: 12px;
+      width: 150px;
       text-align: center;
       cursor: pointer;
-      transition: 0.25s;
-      border: 1px solid #2a2f35;
     }
 
     .card:hover {
-      transform: translateY(-6px) scale(1.05);
-      border-color: #00c853;
-      background: #2a2f35;
-    }
-
-    /* Loader */
-    .loader {
-      border: 6px solid #2a2f35;
-      border-top: 6px solid #00c853;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      animation: spin 1s linear infinite;
-      margin: 20px auto;
-    }
-
-    @keyframes spin {
-      100% { transform: rotate(360deg); }
-    }
-
-    .hidden {
-      display: none;
+      background: #3a3d42;
     }
 
     /* Offers */
-    .offer {
-      background: #1f2328;
-      padding: 15px;
-      border-radius: 12px;
-      margin: 10px 0;
-      border: 1px solid #2a2f35;
+    .offers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px,1fr));
+      gap: 15px;
     }
 
-    /* Mobile feel */
-    @media(max-width: 768px){
-      .sidebar {display:none;}
-      body {flex-direction: column;}
-      .main {padding: 15px;}
+    .offer {
+      background: #202225;
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid #2d2f33;
+      text-align: center;
+    }
+
+    .offer img {
+      border-radius: 8px;
+    }
+
+    /* User */
+    .user-box {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background: #2d2f33;
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    .avatar {
+      width: 50px;
+      height: 50px;
+      background: #444;
+      border-radius: 8px;
+    }
+
+    /* Support */
+    .support-card {
+      background: #2d2f33;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 10px 0;
+    }
+
+    .hidden { display:none; }
+
+    @media(max-width:768px){
+      .sidebar{display:none;}
+      body{flex-direction:column;}
     }
   </style>
 </head>
 
 <body>
 
-<!-- 🔊 SOUND EFFECTS -->
-<audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"></audio>
-<audio id="successSound" src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3"></audio>
-
 <div class="sidebar">
   <h2>Roblox Panel</h2>
-  <div class="menu-item" onclick="nav('main')">🎮 Robux</div>
-  <div class="menu-item" onclick="nav('user')">👤 User</div>
-  <div class="menu-item" onclick="nav('support')">💬 Support</div>
+  <div class="menu-item" onclick="nav('main')">Robux</div>
+  <div class="menu-item" onclick="nav('user')">User</div>
+  <div class="menu-item" onclick="nav('support')">Support</div>
 </div>
 
 <div class="main">
 
-  <!-- STEP 1 -->
-  <div id="main">
-    <h1>Enter Username</h1>
-    <input id="username" placeholder="Roblox Username"><br>
+  <!-- MAIN -->
+  <div id="main" class="panel">
+    <h1>Robux Generator</h1>
+    <p>Enter your Roblox username to continue</p>
+    <input id="username" placeholder="Username">
     <button onclick="start()">Continue</button>
   </div>
 
   <!-- LOADING -->
-  <div id="loading" class="hidden">
-    <h2>Verifying...</h2>
-    <div class="loader"></div>
-    <p id="loadText">Starting...</p>
+  <div id="loading" class="panel hidden">
+    <h2>Verifying Account</h2>
+    <p id="loadText">Checking...</p>
   </div>
 
   <!-- SELECT -->
-  <div id="select" class="hidden">
-    <h2>Select Robux</h2>
+  <div id="select" class="panel hidden">
+    <h2>Select Amount</h2>
     <div class="cards">
-      <div class="card" onclick="choose()">100</div>
-      <div class="card" onclick="choose()">200</div>
-      <div class="card" onclick="choose()">300</div>
-      <div class="card" onclick="choose()">400</div>
+      <div class="card" onclick="choose()">100 Robux</div>
+      <div class="card" onclick="choose()">200 Robux</div>
+      <div class="card" onclick="choose()">300 Robux</div>
+      <div class="card" onclick="choose()">400 Robux</div>
     </div>
   </div>
 
   <!-- TASKS -->
   <div id="tasks" class="hidden">
-    <h2>Complete Tasks</h2>
-    <div id="offers">Loading...</div>
+    <h2>Available Offers</h2>
+    <div id="offers" class="offers-grid"></div>
   </div>
 
   <!-- USER -->
   <div id="user" class="hidden">
-    <h2>User</h2>
-    <p id="uname"></p>
-    <p id="uid"></p>
+    <h2>User Profile</h2>
+    <div class="user-box">
+      <div class="avatar"></div>
+      <div>
+        <p id="uname"></p>
+        <p id="uid"></p>
+      </div>
+    </div>
   </div>
 
   <!-- SUPPORT -->
   <div id="support" class="hidden">
-    <h2>Support</h2>
-    <p>24/7 Support Available</p>
+    <h2>Support Center</h2>
+
+    <div class="support-card">
+      <b>24/7 Support</b>
+      <p>We are always available</p>
+    </div>
+
+    <div class="support-card">
+      <b>Common Issues</b>
+      <p>Offers not tracking? Try completing again.</p>
+    </div>
+
+    <div class="support-card">
+      <b>Contact</b>
+      <p>Email: support@example.com</p>
+    </div>
   </div>
 
 </div>
 
 <script>
-let username = "";
+let username="";
 
-// 🔊 Sound
-function playClick(){ document.getElementById("clickSound").play(); }
-function playSuccess(){ document.getElementById("successSound").play(); }
-
-// Nav
 function nav(id){
-  playClick();
   document.querySelectorAll('.main > div').forEach(d=>d.classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
 }
 
-// Start
 function start(){
-  playClick();
-  username = document.getElementById("username").value;
+  username=document.getElementById("username").value;
   if(!username) return alert("Enter username");
 
   nav("loading");
 
-  setTimeout(()=>setLoad("Checking username..."),800);
-  setTimeout(()=>setLoad("Connecting..."),1600);
-  setTimeout(()=>setLoad("Verified"),2400);
-
-  setTimeout(()=>{
-    playSuccess();
-    nav("select");
-    genUser();
-  },3000);
+  setTimeout(()=>nav("select"),2000);
+  document.getElementById("uname").innerText="Username: "+username;
+  document.getElementById("uid").innerText="User ID: "+Math.floor(Math.random()*999999999);
 }
 
-function setLoad(t){
-  document.getElementById("loadText").innerText = t;
-}
-
-// User
-function genUser(){
-  document.getElementById("uname").innerText = "Username: "+username;
-  document.getElementById("uid").innerText = "User ID: "+Math.floor(Math.random()*999999999);
-}
-
-// Select
 function choose(){
-  playClick();
   nav("tasks");
   loadOffers();
 }
 
-// API (UNCHANGED)
 async function loadOffers(){
   try{
-    const res = await fetch('/api/offers');
-    const data = await res.json();
+    const res=await fetch('/api/offers');
+    const data=await res.json();
 
     let html="";
     data.offers.forEach(o=>{
       html+=`
       <div class="offer">
-        <img src="${o.picture}" width="80"><br>
+        <img src="${o.picture}" width="100"><br>
         <b>${o.name_short}</b><br><br>
         <a href="${o.link}" target="_blank">
-          <button onclick="playClick()">Complete</button>
+          <button>Complete</button>
         </a>
       </div>`;
     });
 
-    document.getElementById("offers").innerHTML = html;
+    document.getElementById("offers").innerHTML=html;
 
   }catch{
     document.getElementById("offers").innerText="Error loading offers";
