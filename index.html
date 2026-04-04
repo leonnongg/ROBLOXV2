@@ -1,333 +1,273 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Robux Panel</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Robux Generator</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Montserrat', sans-serif;
-      background: #181a1b;
-      color: #e4e6eb;
-    }
+<style>
+body {
+  margin:0;
+  font-family: 'Montserrat', sans-serif;
+  background: linear-gradient(135deg,#0f172a,#020617);
+  color:white;
+  display:flex;
+}
 
-    /* NAVBAR */
-    .navbar {
-      height: 60px;
-      background: #202225;
-      display: flex;
-      align-items: center;
-      padding: 0 20px;
-      justify-content: space-between;
-      border-bottom: 1px solid #2d2f33;
-    }
+/* SIDEBAR */
+.sidebar {
+  width:220px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(15px);
+  padding:20px;
+  height:100vh;
+}
 
-    .logo {
-      font-weight: 700;
-      font-size: 18px;
-    }
+.sidebar h2 {margin-bottom:20px;}
 
-    /* Layout */
-    .container {
-      display: flex;
-    }
+.menu-item {
+  padding:10px;
+  margin:10px 0;
+  border-radius:10px;
+  cursor:pointer;
+  background: rgba(255,255,255,0.05);
+}
 
-    .sidebar {
-      width: 220px;
-      background: #202225;
-      height: calc(100vh - 60px);
-      padding: 20px;
-      border-right: 1px solid #2d2f33;
-    }
+.menu-item:hover {
+  background: rgba(255,255,255,0.1);
+}
 
-    .menu-item {
-      padding: 10px;
-      border-radius: 8px;
-      margin-bottom: 10px;
-      cursor: pointer;
-      color: #b0b3b8;
-    }
+/* MAIN */
+.main {
+  flex:1;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
 
-    .menu-item:hover {
-      background: #2d2f33;
-      color: white;
-    }
+.card {
+  width:350px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(20px);
+  border-radius:20px;
+  padding:20px;
+  text-align:center;
+}
 
-    .main {
-      flex: 1;
-      padding: 25px;
-    }
+/* INPUT */
+input {
+  width:90%;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  margin:10px 0;
+}
 
-    .panel {
-      background: #202225;
-      padding: 20px;
-      border-radius: 12px;
-      border: 1px solid #2d2f33;
-      max-width: 600px;
-    }
+/* BUTTON */
+button {
+  padding:10px 20px;
+  border:none;
+  border-radius:10px;
+  background:#22c55e;
+  color:white;
+  cursor:pointer;
+}
 
-    input {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: none;
-      background: #2d2f33;
-      color: white;
-      margin-top: 10px;
-    }
+button:hover {opacity:0.8;}
 
-    button {
-      padding: 10px 16px;
-      border-radius: 8px;
-      border: none;
-      background: #5865f2;
-      color: white;
-      margin-top: 10px;
-      cursor: pointer;
-    }
+/* ROBUX */
+.robux-options div {
+  background: rgba(255,255,255,0.1);
+  margin:10px;
+  padding:10px;
+  border-radius:10px;
+  cursor:pointer;
+}
 
-    /* Cards */
-    .cards {
-      display: flex;
-      flex-wrap: wrap;
-    }
+.robux-options div:hover {
+  background:#22c55e;
+}
 
-    .card {
-      background: #2d2f33;
-      padding: 20px;
-      margin: 10px;
-      border-radius: 12px;
-      width: 140px;
-      text-align: center;
-      cursor: pointer;
-    }
+/* LOADING */
+.loader {
+  border:4px solid #333;
+  border-top:4px solid #22c55e;
+  border-radius:50%;
+  width:40px;
+  height:40px;
+  animation: spin 1s linear infinite;
+  margin:auto;
+}
 
-    .card:hover { background:#3a3d42; }
+@keyframes spin {
+  0% {transform:rotate(0deg);}
+  100% {transform:rotate(360deg);}
+}
 
-    /* Offers */
-    .offers-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
-      gap: 15px;
-    }
+/* POPUP */
+.popup {
+  position:fixed;
+  bottom:10px;
+  right:10px;
+  background:#111;
+  padding:10px;
+  border-radius:10px;
+  font-size:12px;
+  opacity:0;
+  transition:0.5s;
+}
 
-    .offer {
-      background: #202225;
-      padding: 15px;
-      border-radius: 12px;
-      border: 1px solid #2d2f33;
-      text-align: center;
-    }
-
-    /* Skeleton */
-    .skeleton {
-      height: 150px;
-      background: linear-gradient(90deg,#2d2f33,#3a3d42,#2d2f33);
-      animation: shimmer 1.2s infinite;
-      border-radius: 10px;
-    }
-
-    @keyframes shimmer {
-      0% {background-position:-200px 0;}
-      100% {background-position:200px 0;}
-    }
-
-    /* User */
-    .user-box {
-      display: flex;
-      gap: 15px;
-      align-items: center;
-      background: #2d2f33;
-      padding: 15px;
-      border-radius: 10px;
-    }
-
-    .avatar {
-      width: 60px;
-      height: 60px;
-      border-radius: 10px;
-    }
-
-    /* Progress */
-    .progress {
-      height: 10px;
-      background: #2d2f33;
-      border-radius: 10px;
-      margin-top: 10px;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: #00c853;
-    }
-
-    .hidden { display:none; }
-
-    @media(max-width:768px){
-      .sidebar{display:none;}
-      .container{flex-direction:column;}
-    }
-  </style>
+</style>
 </head>
 
 <body>
 
-<div class="navbar">
-  <div class="logo">Roblox Panel</div>
-  <div id="navUser"></div>
-</div>
-
-<div class="container">
-
+<!-- SIDEBAR -->
 <div class="sidebar">
-  <div class="menu-item" onclick="nav('main')">Robux</div>
-  <div class="menu-item" onclick="nav('user')">User</div>
-  <div class="menu-item" onclick="nav('support')">Support</div>
-</div>
+  <h2>MENU</h2>
 
-<div class="main">
+  <div class="menu-item">🎮 Generator</div>
+  <div class="menu-item" id="userInfo">👤 User: -</div>
+  <div class="menu-item">🆔 ID: <span id="uid">-</span></div>
+  <div class="menu-item">📞 24/7 Support</div>
+</div>
 
 <!-- MAIN -->
-<div id="main" class="panel">
-  <h2>Robux Generator</h2>
-  <input id="username" placeholder="Username">
-  <button onclick="start()">Continue</button>
-</div>
+<div class="main">
+  <div class="card" id="app">
 
-<!-- LOADING -->
-<div id="loading" class="panel hidden">
-  <h3>Verifying...</h3>
-</div>
-
-<!-- SELECT -->
-<div id="select" class="panel hidden">
-  <h3>Select Amount</h3>
-  <div class="cards">
-    <div class="card" onclick="choose()">100</div>
-    <div class="card" onclick="choose()">200</div>
-    <div class="card" onclick="choose()">300</div>
-    <div class="card" onclick="choose()">400</div>
-  </div>
-</div>
-
-<!-- TASKS -->
-<div id="tasks" class="hidden">
-  <h3>Complete Tasks</h3>
-
-  <div class="progress">
-    <div class="progress-bar" id="progressBar"></div>
-  </div>
-
-  <div id="offers" class="offers-grid"></div>
-</div>
-
-<!-- USER -->
-<div id="user" class="hidden">
-  <h3>User Profile</h3>
-  <div class="user-box">
-    <img id="avatar" class="avatar">
-    <div>
-      <p id="uname"></p>
-      <p id="uid"></p>
+    <!-- STEP 1 -->
+    <div id="step1">
+      <h2>Enter Username</h2>
+      <input id="username" placeholder="Roblox Username">
+      <br>
+      <button onclick="start()">Continue</button>
     </div>
+
+    <!-- STEP 2 -->
+    <div id="step2" style="display:none;">
+      <h2>Verifying...</h2>
+      <div class="loader"></div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div id="step3" style="display:none;">
+      <h2>Select Robux</h2>
+      <div class="robux-options">
+        <div onclick="selectRobux(100)">100 Robux</div>
+        <div onclick="selectRobux(200)">200 Robux</div>
+        <div onclick="selectRobux(300)">300 Robux</div>
+        <div onclick="selectRobux(400)">400 Robux</div>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div id="step4" style="display:none;">
+      <h2>Complete Tasks</h2>
+      <div id="offers">Loading offers...</div>
+    </div>
+
   </div>
 </div>
 
-<!-- SUPPORT -->
-<div id="support" class="hidden">
-  <h3>Support</h3>
-  <p>24/7 support available</p>
-</div>
+<!-- POPUP -->
+<div class="popup" id="popup"></div>
 
-</div>
-</div>
+<!-- SOUND -->
+<audio id="clickSound" src="https://www.myinstants.com/media/sounds/mouse-click.mp3"></audio>
+<audio id="successSound" src="https://www.myinstants.com/media/sounds/success.mp3"></audio>
 
 <script>
-let username="";
 
-// Nav
-function nav(id){
-  document.querySelectorAll('.main > div').forEach(d=>d.classList.add('hidden'));
-  document.getElementById(id).classList.remove('hidden');
-}
+let username = "";
 
-// Start
-function start(){
-  username=document.getElementById("username").value;
+/* STEP FLOW */
+function start() {
+  username = document.getElementById("username").value;
   if(!username) return alert("Enter username");
 
-  nav("loading");
+  playClick();
+
+  document.getElementById("userInfo").innerText = "👤 User: " + username;
+  document.getElementById("uid").innerText = Math.floor(Math.random()*999999999);
+
+  document.getElementById("step1").style.display="none";
+  document.getElementById("step2").style.display="block";
 
   setTimeout(()=>{
-    nav("select");
-    genUser();
-  },1500);
+    document.getElementById("step2").style.display="none";
+    document.getElementById("step3").style.display="block";
+  },2000);
 }
 
-// User
-async function genUser(){
-  document.getElementById("uname").innerText=username;
-  document.getElementById("uid").innerText="ID: "+Math.floor(Math.random()*999999999);
-  document.getElementById("navUser").innerText=username;
+function selectRobux(amount){
+  playSuccess();
 
-  // Avatar fetch (Roblox API)
-  document.getElementById("avatar").src =
-  `https://thumbnails.roblox.com/v1/users/avatar-headshot?username=${username}&size=150x150&format=Png`;
+  document.getElementById("step3").style.display="none";
+  document.getElementById("step4").style.display="block";
+
+  loadOffers(); // API STILL WORKS
 }
 
-// Choose
-function choose(){
-  nav("tasks");
-  loadSkeleton();
-  loadOffers();
-}
+/* OFFERS API */
+async function loadOffers() {
+  try {
+    const res = await fetch('/api/offers');
+    const data = await res.json();
 
-// Skeleton loading
-function loadSkeleton(){
-  let sk="";
-  for(let i=0;i<6;i++){
-    sk+=`<div class="skeleton"></div>`;
-  }
-  document.getElementById("offers").innerHTML=sk;
-}
+    if (!data.offers || data.offers.length === 0) {
+      document.getElementById("offers").innerText = "No offers available";
+      return;
+    }
 
-// API
-async function loadOffers(){
-  try{
-    const res=await fetch('/api/offers');
-    const data=await res.json();
+    let html = "";
 
-    let html="";
-    data.offers.forEach((o,i)=>{
-      html+=`
-      <div class="offer">
-        <img src="${o.picture}" width="100"><br>
-        <b>${o.name_short}</b><br><br>
-        <a href="${o.link}" target="_blank">
-          <button onclick="updateProgress(${i+1})">Complete</button>
-        </a>
-      </div>`;
+    data.offers.forEach(o => {
+      html += `
+        <div style="margin:10px;padding:10px;background:#111;border-radius:10px;">
+          <img src="${o.picture}" width="60"><br>
+          <b>${o.name_short}</b><br>
+          <a href="${o.link}" target="_blank">
+            <button>Complete</button>
+          </a>
+        </div>
+      `;
     });
 
-    setTimeout(()=>{
-      document.getElementById("offers").innerHTML=html;
-    },1000);
+    document.getElementById("offers").innerHTML = html;
 
-  }catch{
-    document.getElementById("offers").innerText="Error loading offers";
+  } catch (e) {
+    document.getElementById("offers").innerText = "Error loading offers";
   }
 }
 
-// Progress
-function updateProgress(step){
-  let percent = Math.min(step*30,100);
-  document.getElementById("progressBar").style.width = percent+"%";
+/* SOUND */
+function playClick(){
+  document.getElementById("clickSound").play();
 }
+function playSuccess(){
+  document.getElementById("successSound").play();
+}
+
+/* FAKE POPUPS */
+const names = ["NoobMaster","ProGamer","ShadowX","DragonYT","SpeedRun","XxDarkxX","BuilderPro","RobloxKing"];
+
+setInterval(()=>{
+  const popup = document.getElementById("popup");
+  const name = names[Math.floor(Math.random()*names.length)];
+  const amount = [100,200,300,400][Math.floor(Math.random()*4)];
+
+  popup.innerText = name + " just received " + amount + " Robux!";
+  popup.style.opacity = 1;
+
+  setTimeout(()=>{
+    popup.style.opacity = 0;
+  },3000);
+
+},5000);
+
 </script>
 
 </body>
