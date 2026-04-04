@@ -12,25 +12,39 @@
       font-family: 'Montserrat', sans-serif;
       background: #181a1b;
       color: #e4e6eb;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      height: 60px;
+      background: #202225;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      justify-content: space-between;
+      border-bottom: 1px solid #2d2f33;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    /* Layout */
+    .container {
       display: flex;
     }
 
-    /* Sidebar */
     .sidebar {
-      width: 240px;
+      width: 220px;
       background: #202225;
-      height: 100vh;
+      height: calc(100vh - 60px);
       padding: 20px;
       border-right: 1px solid #2d2f33;
     }
 
-    .sidebar h2 {
-      margin-bottom: 30px;
-      font-weight: 700;
-    }
-
     .menu-item {
-      padding: 12px;
+      padding: 10px;
       border-radius: 8px;
       margin-bottom: 10px;
       cursor: pointer;
@@ -42,23 +56,22 @@
       color: white;
     }
 
-    /* Main */
     .main {
       flex: 1;
-      padding: 30px;
+      padding: 25px;
     }
 
     .panel {
       background: #202225;
-      padding: 25px;
+      padding: 20px;
       border-radius: 12px;
       border: 1px solid #2d2f33;
       max-width: 600px;
     }
 
     input {
-      padding: 14px;
       width: 100%;
+      padding: 12px;
       border-radius: 8px;
       border: none;
       background: #2d2f33;
@@ -67,17 +80,13 @@
     }
 
     button {
-      padding: 12px 18px;
+      padding: 10px 16px;
       border-radius: 8px;
       border: none;
       background: #5865f2;
       color: white;
       margin-top: 10px;
       cursor: pointer;
-    }
-
-    button:hover {
-      background: #6b74ff;
     }
 
     /* Cards */
@@ -91,19 +100,17 @@
       padding: 20px;
       margin: 10px;
       border-radius: 12px;
-      width: 150px;
+      width: 140px;
       text-align: center;
       cursor: pointer;
     }
 
-    .card:hover {
-      background: #3a3d42;
-    }
+    .card:hover { background:#3a3d42; }
 
     /* Offers */
     .offers-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px,1fr));
+      grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
       gap: 15px;
     }
 
@@ -115,48 +122,69 @@
       text-align: center;
     }
 
-    .offer img {
-      border-radius: 8px;
+    /* Skeleton */
+    .skeleton {
+      height: 150px;
+      background: linear-gradient(90deg,#2d2f33,#3a3d42,#2d2f33);
+      animation: shimmer 1.2s infinite;
+      border-radius: 10px;
+    }
+
+    @keyframes shimmer {
+      0% {background-position:-200px 0;}
+      100% {background-position:200px 0;}
     }
 
     /* User */
     .user-box {
       display: flex;
-      align-items: center;
       gap: 15px;
+      align-items: center;
       background: #2d2f33;
       padding: 15px;
       border-radius: 10px;
     }
 
     .avatar {
-      width: 50px;
-      height: 50px;
-      background: #444;
-      border-radius: 8px;
+      width: 60px;
+      height: 60px;
+      border-radius: 10px;
     }
 
-    /* Support */
-    .support-card {
+    /* Progress */
+    .progress {
+      height: 10px;
       background: #2d2f33;
-      padding: 15px;
       border-radius: 10px;
-      margin: 10px 0;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: #00c853;
     }
 
     .hidden { display:none; }
 
     @media(max-width:768px){
       .sidebar{display:none;}
-      body{flex-direction:column;}
+      .container{flex-direction:column;}
     }
   </style>
 </head>
 
 <body>
 
+<div class="navbar">
+  <div class="logo">Roblox Panel</div>
+  <div id="navUser"></div>
+</div>
+
+<div class="container">
+
 <div class="sidebar">
-  <h2>Roblox Panel</h2>
   <div class="menu-item" onclick="nav('main')">Robux</div>
   <div class="menu-item" onclick="nav('user')">User</div>
   <div class="menu-item" onclick="nav('support')">Support</div>
@@ -164,117 +192,141 @@
 
 <div class="main">
 
-  <!-- MAIN -->
-  <div id="main" class="panel">
-    <h1>Robux Generator</h1>
-    <p>Enter your Roblox username to continue</p>
-    <input id="username" placeholder="Username">
-    <button onclick="start()">Continue</button>
+<!-- MAIN -->
+<div id="main" class="panel">
+  <h2>Robux Generator</h2>
+  <input id="username" placeholder="Username">
+  <button onclick="start()">Continue</button>
+</div>
+
+<!-- LOADING -->
+<div id="loading" class="panel hidden">
+  <h3>Verifying...</h3>
+</div>
+
+<!-- SELECT -->
+<div id="select" class="panel hidden">
+  <h3>Select Amount</h3>
+  <div class="cards">
+    <div class="card" onclick="choose()">100</div>
+    <div class="card" onclick="choose()">200</div>
+    <div class="card" onclick="choose()">300</div>
+    <div class="card" onclick="choose()">400</div>
+  </div>
+</div>
+
+<!-- TASKS -->
+<div id="tasks" class="hidden">
+  <h3>Complete Tasks</h3>
+
+  <div class="progress">
+    <div class="progress-bar" id="progressBar"></div>
   </div>
 
-  <!-- LOADING -->
-  <div id="loading" class="panel hidden">
-    <h2>Verifying Account</h2>
-    <p id="loadText">Checking...</p>
-  </div>
+  <div id="offers" class="offers-grid"></div>
+</div>
 
-  <!-- SELECT -->
-  <div id="select" class="panel hidden">
-    <h2>Select Amount</h2>
-    <div class="cards">
-      <div class="card" onclick="choose()">100 Robux</div>
-      <div class="card" onclick="choose()">200 Robux</div>
-      <div class="card" onclick="choose()">300 Robux</div>
-      <div class="card" onclick="choose()">400 Robux</div>
+<!-- USER -->
+<div id="user" class="hidden">
+  <h3>User Profile</h3>
+  <div class="user-box">
+    <img id="avatar" class="avatar">
+    <div>
+      <p id="uname"></p>
+      <p id="uid"></p>
     </div>
   </div>
+</div>
 
-  <!-- TASKS -->
-  <div id="tasks" class="hidden">
-    <h2>Available Offers</h2>
-    <div id="offers" class="offers-grid"></div>
-  </div>
+<!-- SUPPORT -->
+<div id="support" class="hidden">
+  <h3>Support</h3>
+  <p>24/7 support available</p>
+</div>
 
-  <!-- USER -->
-  <div id="user" class="hidden">
-    <h2>User Profile</h2>
-    <div class="user-box">
-      <div class="avatar"></div>
-      <div>
-        <p id="uname"></p>
-        <p id="uid"></p>
-      </div>
-    </div>
-  </div>
-
-  <!-- SUPPORT -->
-  <div id="support" class="hidden">
-    <h2>Support Center</h2>
-
-    <div class="support-card">
-      <b>24/7 Support</b>
-      <p>We are always available</p>
-    </div>
-
-    <div class="support-card">
-      <b>Common Issues</b>
-      <p>Offers not tracking? Try completing again.</p>
-    </div>
-
-    <div class="support-card">
-      <b>Contact</b>
-      <p>Email: support@example.com</p>
-    </div>
-  </div>
-
+</div>
 </div>
 
 <script>
 let username="";
 
+// Nav
 function nav(id){
   document.querySelectorAll('.main > div').forEach(d=>d.classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
 }
 
+// Start
 function start(){
   username=document.getElementById("username").value;
   if(!username) return alert("Enter username");
 
   nav("loading");
 
-  setTimeout(()=>nav("select"),2000);
-  document.getElementById("uname").innerText="Username: "+username;
-  document.getElementById("uid").innerText="User ID: "+Math.floor(Math.random()*999999999);
+  setTimeout(()=>{
+    nav("select");
+    genUser();
+  },1500);
 }
 
+// User
+async function genUser(){
+  document.getElementById("uname").innerText=username;
+  document.getElementById("uid").innerText="ID: "+Math.floor(Math.random()*999999999);
+  document.getElementById("navUser").innerText=username;
+
+  // Avatar fetch (Roblox API)
+  document.getElementById("avatar").src =
+  `https://thumbnails.roblox.com/v1/users/avatar-headshot?username=${username}&size=150x150&format=Png`;
+}
+
+// Choose
 function choose(){
   nav("tasks");
+  loadSkeleton();
   loadOffers();
 }
 
+// Skeleton loading
+function loadSkeleton(){
+  let sk="";
+  for(let i=0;i<6;i++){
+    sk+=`<div class="skeleton"></div>`;
+  }
+  document.getElementById("offers").innerHTML=sk;
+}
+
+// API
 async function loadOffers(){
   try{
     const res=await fetch('/api/offers');
     const data=await res.json();
 
     let html="";
-    data.offers.forEach(o=>{
+    data.offers.forEach((o,i)=>{
       html+=`
       <div class="offer">
         <img src="${o.picture}" width="100"><br>
         <b>${o.name_short}</b><br><br>
         <a href="${o.link}" target="_blank">
-          <button>Complete</button>
+          <button onclick="updateProgress(${i+1})">Complete</button>
         </a>
       </div>`;
     });
 
-    document.getElementById("offers").innerHTML=html;
+    setTimeout(()=>{
+      document.getElementById("offers").innerHTML=html;
+    },1000);
 
   }catch{
     document.getElementById("offers").innerText="Error loading offers";
   }
+}
+
+// Progress
+function updateProgress(step){
+  let percent = Math.min(step*30,100);
+  document.getElementById("progressBar").style.width = percent+"%";
 }
 </script>
 
