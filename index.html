@@ -3,271 +3,76 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Robux Generator</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-
+<title>Offers</title>
 <style>
 body {
-  margin:0;
-  font-family: 'Montserrat', sans-serif;
-  background: linear-gradient(135deg,#0f172a,#020617);
-  color:white;
-  display:flex;
+  margin: 0;
+  font-family: sans-serif;
+  background: #0f172a;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
-
-/* SIDEBAR */
-.sidebar {
-  width:220px;
+.container {
+  max-width: 400px;
+  padding: 20px;
   background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(15px);
-  padding:20px;
-  height:100vh;
+  border-radius: 10px;
 }
-
-.sidebar h2 {margin-bottom:20px;}
-
-.menu-item {
-  padding:10px;
-  margin:10px 0;
-  border-radius:10px;
-  cursor:pointer;
-  background: rgba(255,255,255,0.05);
-}
-
-.menu-item:hover {
+.offer {
+  margin: 10px 0;
+  padding: 10px;
   background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+  text-align: center;
 }
-
-/* MAIN */
-.main {
-  flex:1;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
-.card {
-  width:350px;
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(20px);
-  border-radius:20px;
-  padding:20px;
-  text-align:center;
-}
-
-/* INPUT */
-input {
-  width:90%;
-  padding:10px;
-  border:none;
-  border-radius:10px;
-  margin:10px 0;
-}
-
-/* BUTTON */
 button {
-  padding:10px 20px;
-  border:none;
-  border-radius:10px;
-  background:#22c55e;
-  color:white;
-  cursor:pointer;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background: #22c55e;
+  color: white;
+  cursor: pointer;
 }
-
-button:hover {opacity:0.8;}
-
-/* ROBUX */
-.robux-options div {
-  background: rgba(255,255,255,0.1);
-  margin:10px;
-  padding:10px;
-  border-radius:10px;
-  cursor:pointer;
-}
-
-.robux-options div:hover {
-  background:#22c55e;
-}
-
-/* LOADING */
-.loader {
-  border:4px solid #333;
-  border-top:4px solid #22c55e;
-  border-radius:50%;
-  width:40px;
-  height:40px;
-  animation: spin 1s linear infinite;
-  margin:auto;
-}
-
-@keyframes spin {
-  0% {transform:rotate(0deg);}
-  100% {transform:rotate(360deg);}
-}
-
-/* POPUP */
-.popup {
-  position:fixed;
-  bottom:10px;
-  right:10px;
-  background:#111;
-  padding:10px;
-  border-radius:10px;
-  font-size:12px;
-  opacity:0;
-  transition:0.5s;
-}
-
+button:hover {opacity:0.85;}
 </style>
 </head>
-
 <body>
 
-<!-- SIDEBAR -->
-<div class="sidebar">
-  <h2>MENU</h2>
-
-  <div class="menu-item">🎮 Generator</div>
-  <div class="menu-item" id="userInfo">👤 User: -</div>
-  <div class="menu-item">🆔 ID: <span id="uid">-</span></div>
-  <div class="menu-item">📞 24/7 Support</div>
+<div class="container">
+  <h2>Available Offers</h2>
+  <div id="offers">Loading offers...</div>
 </div>
-
-<!-- MAIN -->
-<div class="main">
-  <div class="card" id="app">
-
-    <!-- STEP 1 -->
-    <div id="step1">
-      <h2>Enter Username</h2>
-      <input id="username" placeholder="Roblox Username">
-      <br>
-      <button onclick="start()">Continue</button>
-    </div>
-
-    <!-- STEP 2 -->
-    <div id="step2" style="display:none;">
-      <h2>Verifying...</h2>
-      <div class="loader"></div>
-    </div>
-
-    <!-- STEP 3 -->
-    <div id="step3" style="display:none;">
-      <h2>Select Robux</h2>
-      <div class="robux-options">
-        <div onclick="selectRobux(100)">100 Robux</div>
-        <div onclick="selectRobux(200)">200 Robux</div>
-        <div onclick="selectRobux(300)">300 Robux</div>
-        <div onclick="selectRobux(400)">400 Robux</div>
-      </div>
-    </div>
-
-    <!-- STEP 4 -->
-    <div id="step4" style="display:none;">
-      <h2>Complete Tasks</h2>
-      <div id="offers">Loading offers...</div>
-    </div>
-
-  </div>
-</div>
-
-<!-- POPUP -->
-<div class="popup" id="popup"></div>
-
-<!-- SOUND -->
-<audio id="clickSound" src="https://www.myinstants.com/media/sounds/mouse-click.mp3"></audio>
-<audio id="successSound" src="https://www.myinstants.com/media/sounds/success.mp3"></audio>
 
 <script>
-
-let username = "";
-
-/* STEP FLOW */
-function start() {
-  username = document.getElementById("username").value;
-  if(!username) return alert("Enter username");
-
-  playClick();
-
-  document.getElementById("userInfo").innerText = "👤 User: " + username;
-  document.getElementById("uid").innerText = Math.floor(Math.random()*999999999);
-
-  document.getElementById("step1").style.display="none";
-  document.getElementById("step2").style.display="block";
-
-  setTimeout(()=>{
-    document.getElementById("step2").style.display="none";
-    document.getElementById("step3").style.display="block";
-  },2000);
-}
-
-function selectRobux(amount){
-  playSuccess();
-
-  document.getElementById("step3").style.display="none";
-  document.getElementById("step4").style.display="block";
-
-  loadOffers(); // API STILL WORKS
-}
-
-/* OFFERS API */
 async function loadOffers() {
   try {
     const res = await fetch('/api/offers');
     const data = await res.json();
 
+    const offersDiv = document.getElementById("offers");
     if (!data.offers || data.offers.length === 0) {
-      document.getElementById("offers").innerText = "No offers available";
+      offersDiv.innerText = "No offers available";
       return;
     }
 
-    let html = "";
-
-    data.offers.forEach(o => {
-      html += `
-        <div style="margin:10px;padding:10px;background:#111;border-radius:10px;">
-          <img src="${o.picture}" width="60"><br>
-          <b>${o.name_short}</b><br>
-          <a href="${o.link}" target="_blank">
-            <button>Complete</button>
-          </a>
-        </div>
-      `;
-    });
-
-    document.getElementById("offers").innerHTML = html;
-
-  } catch (e) {
+    offersDiv.innerHTML = data.offers.map(o => `
+      <div class="offer">
+        <img src="${o.picture}" width="60"><br>
+        <b>${o.name_short}</b><br>
+        <a href="${o.link}" target="_blank">
+          <button>View Offer</button>
+        </a>
+      </div>
+    `).join('');
+  } catch (err) {
     document.getElementById("offers").innerText = "Error loading offers";
   }
 }
 
-/* SOUND */
-function playClick(){
-  document.getElementById("clickSound").play();
-}
-function playSuccess(){
-  document.getElementById("successSound").play();
-}
-
-/* FAKE POPUPS */
-const names = ["NoobMaster","ProGamer","ShadowX","DragonYT","SpeedRun","XxDarkxX","BuilderPro","RobloxKing"];
-
-setInterval(()=>{
-  const popup = document.getElementById("popup");
-  const name = names[Math.floor(Math.random()*names.length)];
-  const amount = [100,200,300,400][Math.floor(Math.random()*4)];
-
-  popup.innerText = name + " just received " + amount + " Robux!";
-  popup.style.opacity = 1;
-
-  setTimeout(()=>{
-    popup.style.opacity = 0;
-  },3000);
-
-},5000);
-
+loadOffers();
 </script>
 
 </body>
