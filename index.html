@@ -5,22 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Game World</title>
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+
   <style>
     * {
       box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      font-family: "Source Sans Pro", sans-serif;
-      background: #111;
-      color: #fff;
+    html {
       scroll-behavior: smooth;
     }
 
     body {
+      margin: 0;
+      font-family: "Source Sans Pro", sans-serif;
+      background: #111;
+      color: #fff;
       overflow-x: hidden;
+    }
+
+    section {
+      scroll-margin-top: 90px;
     }
 
     .navbar {
@@ -40,8 +45,8 @@
       padding: 14px 20px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 16px;
+      justify-content: flex-start;
+      gap: 48px;
     }
 
     .brand {
@@ -50,6 +55,7 @@
       letter-spacing: 1px;
       color: white;
       user-select: none;
+      flex-shrink: 0;
     }
 
     .nav-links {
@@ -57,6 +63,7 @@
       align-items: center;
       gap: 22px;
       flex-wrap: wrap;
+      margin-left: auto;
     }
 
     .fake-link {
@@ -64,7 +71,6 @@
       color: #fff;
       font-size: 18px;
       text-decoration: none;
-      cursor: default;
       user-select: none;
       opacity: 0.95;
       transition: opacity 0.2s ease, transform 0.2s ease;
@@ -86,7 +92,8 @@
       transform: translateY(-1px);
     }
 
-    .fake-link:hover::after {
+    .fake-link:hover::after,
+    .fake-link.active::after {
       width: 100%;
     }
 
@@ -322,16 +329,21 @@
       }
 
       .nav-inner {
+        gap: 18px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .nav-inner {
         flex-direction: column;
         align-items: flex-start;
       }
 
       .nav-links {
+        margin-left: 0;
         gap: 14px;
       }
-    }
 
-    @media (max-width: 560px) {
       .brand {
         font-size: 24px;
       }
@@ -361,16 +373,17 @@
   <header class="navbar">
     <div class="nav-inner">
       <div class="brand">GAME WORLD</div>
+
       <nav class="nav-links" aria-label="Main navigation">
-        <span class="fake-link">Play</span>
-        <span class="fake-link">About</span>
-        <span class="fake-link">Platforms</span>
+        <a href="#play" class="fake-link nav-link active">Play</a>
+        <a href="#about" class="fake-link nav-link">About</a>
+        <a href="#platforms" class="fake-link nav-link">Platforms</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <section class="hero">
+    <section id="play" class="hero">
       <div class="hero-inner">
         <div class="hero-left">
           <h1 class="hero-logo">GAME WORLD</h1>
@@ -388,7 +401,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section id="about" class="section">
       <div class="section-inner about-wrap">
         <div class="about-box">
           <h1>WHAT IS GAME WORLD?</h1>
@@ -406,7 +419,7 @@
       </div>
     </section>
 
-    <section class="section device-section">
+    <section id="platforms" class="section device-section">
       <div class="section-inner">
         <div class="device-text">
           <h2>ON YOUR DEVICE</h2>
@@ -456,6 +469,33 @@
       </p>
     </div>
   </footer>
+
+  <script>
+    const links = document.querySelectorAll(".nav-link");
+    const sections = document.querySelectorAll("main section");
+
+    function setActiveLink() {
+      let current = "play";
+
+      sections.forEach(section => {
+        const top = section.offsetTop - 120;
+        if (window.scrollY >= top) current = section.id;
+      });
+
+      links.forEach(link => {
+        link.classList.toggle("active", link.getAttribute("href") === "#" + current);
+      });
+    }
+
+    links.forEach(link => {
+      link.addEventListener("click", function () {
+        setTimeout(setActiveLink, 350);
+      });
+    });
+
+    window.addEventListener("scroll", setActiveLink);
+    window.addEventListener("load", setActiveLink);
+  </script>
 
 </body>
 </html>
