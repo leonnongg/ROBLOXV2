@@ -1,79 +1,461 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Offers</title>
-<style>
-body {
-  margin: 0;
-  font-family: sans-serif;
-  background: #0f172a;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
-.container {
-  max-width: 400px;
-  padding: 20px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 10px;
-}
-.offer {
-  margin: 10px 0;
-  padding: 10px;
-  background: rgba(255,255,255,0.1);
-  border-radius: 10px;
-  text-align: center;
-}
-button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 6px;
-  background: #22c55e;
-  color: white;
-  cursor: pointer;
-}
-button:hover {opacity:0.85;}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Game World</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Source Sans Pro", sans-serif;
+      background: #111;
+      color: #fff;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(24, 26, 27, 0.94);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: white;
+      user-select: none;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+
+    .fake-link {
+      position: relative;
+      color: #fff;
+      font-size: 18px;
+      text-decoration: none;
+      cursor: default;
+      user-select: none;
+      opacity: 0.95;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .fake-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 0%;
+      height: 2px;
+      background: #00b4ff;
+      transition: width 0.25s ease;
+    }
+
+    .fake-link:hover {
+      opacity: 1;
+      transform: translateY(-1px);
+    }
+
+    .fake-link:hover::after {
+      width: 100%;
+    }
+
+    .hero {
+      min-height: 100vh;
+      background:
+        linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.45)),
+        url("https://images.rbxcdn.com/e942d5c326e104bddf1d2c8ce3e0e9a7.png") center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      padding: 100px 20px 40px;
+    }
+
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero-left {
+      text-align: center;
+    }
+
+    .hero-logo {
+      font-size: clamp(56px, 10vw, 120px);
+      font-weight: 700;
+      letter-spacing: 3px;
+      margin: 0;
+      text-shadow: 0 6px 30px rgba(0,0,0,0.4);
+    }
+
+    .hero-sub {
+      margin-top: 12px;
+      font-size: clamp(18px, 2vw, 28px);
+      color: rgba(255,255,255,0.95);
+    }
+
+    .hero-card {
+      background: rgba(0, 0, 0, 0.38);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 28px 24px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.28);
+      min-height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-card-inner {
+      text-align: center;
+      max-width: 360px;
+    }
+
+    .hero-card h3 {
+      margin: 0 0 10px;
+      font-size: 34px;
+      font-weight: 700;
+    }
+
+    .hero-card p {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .section {
+      padding: 70px 20px;
+    }
+
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .about-wrap {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    .about-box {
+      max-width: 620px;
+      margin: 0 auto 10px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 10px;
+      padding: 28px;
+      text-align: center;
+    }
+
+    .about-box h1,
+    .device-text h2 {
+      margin-top: 0;
+      margin-bottom: 14px;
+      font-size: clamp(30px, 4vw, 42px);
+      font-weight: 700;
+    }
+
+    .about-box p,
+    .device-text p {
+      font-size: 22px;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.88);
+      margin: 0;
+    }
+
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .game-tile {
+      height: 220px;
+      border-radius: 12px;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.25);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .game-tile:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.32);
+    }
+
+    .device-section {
+      background: linear-gradient(180deg, #121212, #1a1a1a);
+    }
+
+    .device-text {
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .device-image-wrap {
+      margin-top: 34px;
+      text-align: center;
+    }
+
+    .device-image-wrap img {
+      max-width: 100%;
+      height: auto;
+      display: inline-block;
+    }
+
+    .stores {
+      margin-top: 28px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 18px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .store-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px;
+      min-width: 140px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      transition: transform 0.2s ease, background 0.2s ease;
+      user-select: none;
+    }
+
+    .store-badge:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .store-badge img {
+      max-height: 40px;
+      width: auto;
+      display: block;
+    }
+
+    footer {
+      background: #0d0d0d;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 28px 20px 36px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 18px 24px;
+      margin: 0 0 18px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .footer-note {
+      margin: 0;
+      color: rgba(255,255,255,0.68);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-left {
+        order: 1;
+      }
+
+      .hero-card {
+        order: 2;
+        min-height: auto;
+      }
+
+      .game-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        gap: 14px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .brand {
+        font-size: 24px;
+      }
+
+      .fake-link {
+        font-size: 16px;
+      }
+
+      .hero-card h3 {
+        font-size: 28px;
+      }
+
+      .hero-card p,
+      .about-box p,
+      .device-text p {
+        font-size: 18px;
+      }
+
+      .section {
+        padding: 56px 16px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
-  <h2>Available Offers</h2>
-  <div id="offers">Loading offers...</div>
-</div>
+  <header class="navbar">
+    <div class="nav-inner">
+      <div class="brand">GAME WORLD</div>
+      <nav class="nav-links" aria-label="Main navigation">
+        <span class="fake-link">Play</span>
+        <span class="fake-link">About</span>
+        <span class="fake-link">Platforms</span>
+      </nav>
+    </div>
+  </header>
 
-<script>
-async function loadOffers() {
-  try {
-    const res = await fetch('/api/offers');
-    const data = await res.json();
+  <main>
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-left">
+          <h1 class="hero-logo">GAME WORLD</h1>
+          <div class="hero-sub">Power your imagination</div>
+        </div>
 
-    const offersDiv = document.getElementById("offers");
-    if (!data.offers || data.offers.length === 0) {
-      offersDiv.innerText = "No offers available";
-      return;
-    }
-
-    offersDiv.innerHTML = data.offers.map(o => `
-      <div class="offer">
-        <img src="${o.picture}" width="60"><br>
-        <b>${o.name_short}</b><br>
-        <a href="${o.link}" target="_blank">
-          <button>View Offer</button>
-        </a>
+        <div class="hero-card">
+          <div class="hero-card-inner">
+            <h3>Welcome</h3>
+            <p>
+              Explore worlds, discover adventures, and enjoy a clean landing page layout with no forms, no sign up, and no clickable redirects.
+            </p>
+          </div>
+        </div>
       </div>
-    `).join('');
-  } catch (err) {
-    document.getElementById("offers").innerText = "Error loading offers";
-  }
-}
+    </section>
 
-loadOffers();
-</script>
+    <section class="section">
+      <div class="section-inner about-wrap">
+        <div class="about-box">
+          <h1>WHAT IS GAME WORLD?</h1>
+          <p>
+            Game World is a simple static showcase page with a large hero section,
+            featured visuals, and device support styling inspired by classic gaming landing pages.
+          </p>
+        </div>
+
+        <div class="game-grid">
+          <div class="game-tile" style="background-image:url('https://images.rbxcdn.com/6c27cb9db1779888868bf7d87e6d3709.jpg');"></div>
+          <div class="game-tile" style="background-image:url('https://images.rbxcdn.com/e942d5c326e104bddf1d2c8ce3e0e9a7.png');"></div>
+          <div class="game-tile" style="background-image:url('https://images.rbxcdn.com/6c27cb9db1779888868bf7d87e6d3709.jpg');"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section device-section">
+      <div class="section-inner">
+        <div class="device-text">
+          <h2>ON YOUR DEVICE</h2>
+          <p>
+            This static mockup keeps the same general outside feel while removing forms, redirects, and active navigation.
+          </p>
+        </div>
+
+        <div class="device-image-wrap">
+          <img src="https://images.rbxcdn.com/c289947cbd1e64dd74edf06d49521778.png" alt="Devices">
+        </div>
+
+        <ul class="stores">
+          <li class="store-badge">
+            <img src="https://images.rbxcdn.com/9819a104fc46fb90d183387ba81065a0.png" alt="Store badge">
+          </li>
+          <li class="store-badge">
+            <img src="https://images.rbxcdn.com/c3f1d2562c735775d7fa2fc3ddb0dfdd.png" alt="Store badge">
+          </li>
+          <li class="store-badge">
+            <img src="https://images.rbxcdn.com/29d56f5d7a8c1d6d4a267b28134e221d.png" alt="Store badge">
+          </li>
+          <li class="store-badge">
+            <img src="https://images.rbxcdn.com/cfbff08ccdfe3e51898dfecf5635dc2a.png" alt="Store badge">
+          </li>
+          <li class="store-badge">
+            <img src="https://images.rbxcdn.com/6e6e44a25ac2fc28a678880c2fec24a9.png" alt="Store badge">
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <ul class="footer-links">
+        <li><span class="fake-link">About Us</span></li>
+        <li><span class="fake-link">Jobs</span></li>
+        <li><span class="fake-link">Blog</span></li>
+        <li><span class="fake-link">Parents</span></li>
+        <li><span class="fake-link">Help</span></li>
+        <li><span class="fake-link">Terms</span></li>
+        <li><span class="fake-link">Privacy</span></li>
+      </ul>
+      <p class="footer-note">
+        © 2026 Game World. Static demo layout for display only.
+      </p>
+    </div>
+  </footer>
 
 </body>
 </html>
