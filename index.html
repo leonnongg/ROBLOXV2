@@ -281,6 +281,432 @@
       display: block;
     }
 
+    /* ===================== REWARDS SECTION ===================== */
+
+    /* Full-viewport section, no padding override needed — uses its own layout */
+    .rewards-section {
+      min-height: 100vh;
+      padding: 0 !important;
+      background: #0c0c0e;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Ambient background glow */
+    .rewards-section::before {
+      content: "";
+      position: absolute;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 600px;
+      background: radial-gradient(ellipse at center, rgba(0,180,255,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .rewards-section::after {
+      content: "";
+      position: absolute;
+      bottom: -160px;
+      right: -120px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(ellipse at center, rgba(0,100,200,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .rewards-wrap {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 100px 20px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Header */
+    .rewards-eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #00b4ff;
+      margin-bottom: 14px;
+      opacity: 0;
+      animation: rwdFadeUp 0.5s ease 0.1s forwards;
+    }
+
+    .rewards-title {
+      font-size: clamp(38px, 6vw, 72px);
+      font-weight: 700;
+      letter-spacing: -1px;
+      text-align: center;
+      margin: 0 0 16px;
+      line-height: 1.05;
+      opacity: 0;
+      animation: rwdFadeUp 0.5s ease 0.2s forwards;
+    }
+
+    .rewards-title span {
+      color: #00b4ff;
+    }
+
+    .rewards-sub {
+      font-size: 18px;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      margin: 0 0 56px;
+      opacity: 0;
+      animation: rwdFadeUp 0.5s ease 0.3s forwards;
+    }
+
+    /* Divider line */
+    .rewards-divider {
+      width: 48px;
+      height: 2px;
+      background: #00b4ff;
+      margin: 0 auto 56px;
+      opacity: 0;
+      animation: rwdFadeUp 0.5s ease 0.35s forwards;
+    }
+
+    /* Form panel */
+    .rewards-panel {
+      width: 100%;
+      max-width: 520px;
+      opacity: 0;
+      animation: rwdFadeUp 0.55s ease 0.4s forwards;
+    }
+
+    /* Step row */
+    .step-row {
+      margin-bottom: 24px;
+    }
+
+    .step-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 10px;
+    }
+
+    /* Input */
+    .rwd-input {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 16px;
+      color: #fff;
+      font-family: "Source Sans Pro", sans-serif;
+      outline: none;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .rwd-input:focus {
+      border-color: #00b4ff;
+      background: rgba(0,180,255,0.04);
+    }
+
+    .rwd-input::placeholder {
+      color: rgba(255,255,255,0.22);
+    }
+
+    /* Robux amount tiles */
+    .robux-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .robux-btn {
+      padding: 18px 10px 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 10px;
+      color: #fff;
+      font-family: "Source Sans Pro", sans-serif;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.18s ease, border-color 0.18s ease, transform 0.15s ease, box-shadow 0.15s ease;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .robux-btn-amount {
+      display: block;
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.5px;
+    }
+
+    .robux-btn-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-top: 5px;
+    }
+
+    .robux-btn:hover {
+      background: rgba(0,180,255,0.07);
+      border-color: rgba(0,180,255,0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+
+    .robux-btn.selected {
+      background: rgba(0,180,255,0.1);
+      border-color: #00b4ff;
+      box-shadow: 0 0 0 1px #00b4ff, 0 8px 24px rgba(0,180,255,0.12);
+    }
+
+    .robux-btn.selected .robux-btn-amount {
+      color: #00b4ff;
+    }
+
+    .robux-btn.selected .robux-btn-label {
+      color: rgba(0,180,255,0.6);
+    }
+
+    /* Confirm button */
+    .rwd-confirm-btn {
+      width: 100%;
+      padding: 15px;
+      background: #00b4ff;
+      border: none;
+      border-radius: 8px;
+      color: #000;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      font-family: "Source Sans Pro", sans-serif;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.15s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+      margin-top: 8px;
+    }
+
+    .rwd-confirm-btn:hover:not(:disabled) {
+      background: #1abeff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0,180,255,0.3);
+    }
+
+    .rwd-confirm-btn:disabled {
+      opacity: 0.25;
+      cursor: not-allowed;
+    }
+
+    /* Loading state */
+    .rwd-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      gap: 28px;
+      opacity: 0;
+      animation: rwdFadeUp 0.4s ease 0s forwards;
+    }
+
+    .rwd-loading-ring {
+      width: 56px;
+      height: 56px;
+      position: relative;
+    }
+
+    .rwd-loading-ring::before,
+    .rwd-loading-ring::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+    }
+
+    .rwd-loading-ring::before {
+      border: 2px solid rgba(255,255,255,0.06);
+    }
+
+    .rwd-loading-ring::after {
+      border: 2px solid transparent;
+      border-top-color: #00b4ff;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .rwd-loading-text {
+      font-size: 17px;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.2px;
+      transition: opacity 0.3s ease;
+    }
+
+    /* Offers */
+    .offers-wrap {
+      width: 100%;
+      opacity: 0;
+      animation: rwdFadeUp 0.45s ease 0s forwards;
+    }
+
+    .offers-meta {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .offers-meta h3 {
+      margin: 0 0 8px;
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .offers-meta p {
+      margin: 0;
+      font-size: 15px;
+      color: rgba(255,255,255,0.4);
+    }
+
+    .offers-meta strong {
+      color: rgba(255,255,255,0.75);
+      font-weight: 600;
+    }
+
+    .offers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .offer-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px;
+      padding: 22px 18px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      text-align: center;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      opacity: 0;
+      animation: rwdCardIn 0.4s ease forwards;
+    }
+
+    .offer-card:nth-child(1) { animation-delay: 0.05s; }
+    .offer-card:nth-child(2) { animation-delay: 0.10s; }
+    .offer-card:nth-child(3) { animation-delay: 0.15s; }
+    .offer-card:nth-child(4) { animation-delay: 0.20s; }
+    .offer-card:nth-child(5) { animation-delay: 0.25s; }
+    .offer-card:nth-child(6) { animation-delay: 0.30s; }
+    .offer-card:nth-child(7) { animation-delay: 0.35s; }
+    .offer-card:nth-child(8) { animation-delay: 0.40s; }
+
+    @keyframes rwdCardIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .offer-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0,180,255,0.25);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+    }
+
+    .offer-img {
+      width: 64px;
+      height: 64px;
+      border-radius: 14px;
+      object-fit: cover;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .offer-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.82);
+      line-height: 1.35;
+      flex: 1;
+    }
+
+    .offer-cta {
+      display: block;
+      padding: 10px 0;
+      background: transparent;
+      border: 1px solid rgba(0,180,255,0.45);
+      color: #00b4ff;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      border-radius: 7px;
+      text-decoration: none;
+      font-family: "Source Sans Pro", sans-serif;
+      transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+      width: 100%;
+    }
+
+    .offer-cta:hover {
+      background: #00b4ff;
+      border-color: #00b4ff;
+      color: #000;
+    }
+
+    .offers-empty,
+    .offers-error {
+      text-align: center;
+      padding: 60px 20px;
+      color: rgba(255,255,255,0.35);
+      font-size: 17px;
+    }
+
+    .offers-error {
+      color: rgba(255,100,100,0.8);
+    }
+
+    .rwd-back {
+      display: block;
+      margin: 36px auto 0;
+      background: none;
+      border: none;
+      font-family: "Source Sans Pro", sans-serif;
+      font-size: 14px;
+      color: rgba(255,255,255,0.28);
+      cursor: pointer;
+      letter-spacing: 0.3px;
+      transition: color 0.2s ease;
+      padding: 0;
+    }
+
+    .rwd-back:hover {
+      color: rgba(255,255,255,0.65);
+    }
+
+    /* Shared fade-up entry */
+    @keyframes rwdFadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===================== END REWARDS ===================== */
+
     footer {
       background: #0d0d0d;
       border-top: 1px solid rgba(255,255,255,0.08);
@@ -365,6 +791,10 @@
       .section {
         padding: 56px 16px;
       }
+
+      .robux-btn {
+        font-size: 16px;
+      }
     }
   </style>
 </head>
@@ -375,14 +805,16 @@
       <div class="brand">GAME WORLD</div>
 
       <nav class="nav-links" aria-label="Main navigation">
-        <a href="#play" class="fake-link nav-link active">Play</a>
-        <a href="#about" class="fake-link nav-link">About</a>
+        <a href="#play"     class="fake-link nav-link active">Play</a>
+        <a href="#about"    class="fake-link nav-link">About</a>
         <a href="#platforms" class="fake-link nav-link">Platforms</a>
+        <a href="#rewards"  class="fake-link nav-link">Rewards</a>
       </nav>
     </div>
   </header>
 
   <main>
+    <!-- PLAY -->
     <section id="play" class="hero">
       <div class="hero-inner">
         <div class="hero-left">
@@ -401,6 +833,7 @@
       </div>
     </section>
 
+    <!-- ABOUT -->
     <section id="about" class="section">
       <div class="section-inner about-wrap">
         <div class="about-box">
@@ -419,6 +852,7 @@
       </div>
     </section>
 
+    <!-- PLATFORMS -->
     <section id="platforms" class="section device-section">
       <div class="section-inner">
         <div class="device-text">
@@ -433,22 +867,72 @@
         </div>
 
         <ul class="stores">
-          <li class="store-badge">
-            <img src="https://images.rbxcdn.com/9819a104fc46fb90d183387ba81065a0.png" alt="Store badge">
-          </li>
-          <li class="store-badge">
-            <img src="https://images.rbxcdn.com/c3f1d2562c735775d7fa2fc3ddb0dfdd.png" alt="Store badge">
-          </li>
-          <li class="store-badge">
-            <img src="https://images.rbxcdn.com/29d56f5d7a8c1d6d4a267b28134e221d.png" alt="Store badge">
-          </li>
-          <li class="store-badge">
-            <img src="https://images.rbxcdn.com/cfbff08ccdfe3e51898dfecf5635dc2a.png" alt="Store badge">
-          </li>
-          <li class="store-badge">
-            <img src="https://images.rbxcdn.com/6e6e44a25ac2fc28a678880c2fec24a9.png" alt="Store badge">
-          </li>
+          <li class="store-badge"><img src="https://images.rbxcdn.com/9819a104fc46fb90d183387ba81065a0.png" alt="Store badge"></li>
+          <li class="store-badge"><img src="https://images.rbxcdn.com/c3f1d2562c735775d7fa2fc3ddb0dfdd.png" alt="Store badge"></li>
+          <li class="store-badge"><img src="https://images.rbxcdn.com/29d56f5d7a8c1d6d4a267b28134e221d.png" alt="Store badge"></li>
+          <li class="store-badge"><img src="https://images.rbxcdn.com/cfbff08ccdfe3e51898dfecf5635dc2a.png" alt="Store badge"></li>
+          <li class="store-badge"><img src="https://images.rbxcdn.com/6e6e44a25ac2fc28a678880c2fec24a9.png" alt="Store badge"></li>
         </ul>
+      </div>
+    </section>
+
+    <!-- REWARDS -->
+    <section id="rewards" class="rewards-section">
+      <div class="rewards-wrap">
+
+        <!-- Form state -->
+        <div id="rewards-form">
+          <div class="rewards-eyebrow">Earn Free Robux</div>
+          <h2 class="rewards-title">Complete offers.<br><span>Get rewarded.</span></h2>
+          <p class="rewards-sub">No credit card. No catch. Just complete an offer and collect.</p>
+          <div class="rewards-divider"></div>
+
+          <div class="rewards-panel">
+            <div class="step-row">
+              <div class="step-label">Step 01 — Username</div>
+              <input
+                type="text"
+                class="rwd-input"
+                id="rwd-username"
+                placeholder="Enter your username"
+                autocomplete="off"
+                maxlength="60"
+              />
+            </div>
+
+            <div class="step-row">
+              <div class="step-label">Step 02 — Select amount</div>
+              <div class="robux-options">
+                <button class="robux-btn" data-amount="160" onclick="selectRobux(this)">
+                  <span class="robux-btn-amount">160</span>
+                  <span class="robux-btn-label">Robux</span>
+                </button>
+                <button class="robux-btn" data-amount="280" onclick="selectRobux(this)">
+                  <span class="robux-btn-amount">280</span>
+                  <span class="robux-btn-label">Robux</span>
+                </button>
+                <button class="robux-btn" data-amount="560" onclick="selectRobux(this)">
+                  <span class="robux-btn-amount">560</span>
+                  <span class="robux-btn-label">Robux</span>
+                </button>
+              </div>
+            </div>
+
+            <button class="rwd-confirm-btn" id="rwd-confirm-btn" onclick="confirmRewards()" disabled>
+              View Available Offers
+            </button>
+          </div>
+        </div>
+
+        <!-- Loading state -->
+        <div class="rwd-loading" id="rewards-loading" style="display:none;">
+          <div class="rwd-loading-ring"></div>
+          <div class="rwd-loading-text" id="rwd-loading-text">Finding offers for you…</div>
+        </div>
+
+        <!-- Offers output -->
+        <div id="rewards-offers" style="display:none;"></div>
+
       </div>
     </section>
   </main>
@@ -471,17 +955,17 @@
   </footer>
 
   <script>
+    /* ---- Nav active state ---- */
     const links = document.querySelectorAll(".nav-link");
     const sections = document.querySelectorAll("main section");
 
     function setActiveLink() {
       let current = "play";
-
       sections.forEach(section => {
-        const top = section.offsetTop - 120;
+        // Use the actual rendered top, accounting for scroll
+        const top = section.getBoundingClientRect().top + window.scrollY - 120;
         if (window.scrollY >= top) current = section.id;
       });
-
       links.forEach(link => {
         link.classList.toggle("active", link.getAttribute("href") === "#" + current);
       });
@@ -493,8 +977,112 @@
       });
     });
 
-    window.addEventListener("scroll", setActiveLink);
+    window.addEventListener("scroll", setActiveLink, { passive: true });
     window.addEventListener("load", setActiveLink);
+
+    /* ---- Rewards logic ---- */
+    let selectedAmount = null;
+
+    function selectRobux(btn) {
+      document.querySelectorAll(".robux-btn").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      selectedAmount = btn.getAttribute("data-amount");
+      validateForm();
+    }
+
+    function validateForm() {
+      const username = document.getElementById("rwd-username").value.trim();
+      const btn = document.getElementById("rwd-confirm-btn");
+      btn.disabled = !(username.length > 0 && selectedAmount);
+    }
+
+    document.getElementById("rwd-username").addEventListener("input", validateForm);
+
+    async function confirmRewards() {
+      const username = document.getElementById("rwd-username").value.trim();
+
+      document.getElementById("rewards-form").style.display = "none";
+      document.getElementById("rewards-offers").style.display = "none";
+
+      const loading = document.getElementById("rewards-loading");
+      const loadingText = document.getElementById("rwd-loading-text");
+      loading.style.display = "flex";
+
+      loadingText.textContent = `Finding offers for ${username}…`;
+      await new Promise(r => setTimeout(r, 1400));
+      loadingText.textContent = "Almost there…";
+      await new Promise(r => setTimeout(r, 900));
+
+      try {
+        const res = await fetch("/api/offers");
+        const data = await res.json();
+
+        loading.style.display = "none";
+        const offersEl = document.getElementById("rewards-offers");
+        offersEl.style.display = "block";
+
+        if (!data.offers || data.offers.length === 0) {
+          offersEl.innerHTML = `<div class="offers-empty">No offers available right now. Check back soon.</div>`;
+          return;
+        }
+
+        let html = `
+          <div class="offers-wrap">
+            <div class="offers-meta">
+              <h3>Earn ${selectedAmount} Robux</h3>
+              <p>Signed in as <strong>${escapeHtml(username)}</strong> &mdash; ${data.offers.length} offer${data.offers.length !== 1 ? "s" : ""} available</p>
+            </div>
+            <div class="offers-grid">
+        `;
+
+        data.offers.forEach(o => {
+          html += `
+            <div class="offer-card">
+              <img class="offer-img" src="${escapeHtml(o.picture)}" alt="${escapeHtml(o.name_short)}" onerror="this.style.display='none'">
+              <div class="offer-name">${escapeHtml(o.name_short)}</div>
+              <a class="offer-cta" href="${escapeHtml(o.link)}" target="_blank" rel="noopener noreferrer">Complete Offer</a>
+            </div>
+          `;
+        });
+
+        html += `
+            </div>
+            <button class="rwd-back" onclick="resetRewards()">Change username or amount</button>
+          </div>
+        `;
+
+        offersEl.innerHTML = html;
+
+      } catch (e) {
+        loading.style.display = "none";
+        const offersEl = document.getElementById("rewards-offers");
+        offersEl.style.display = "block";
+        offersEl.innerHTML = `
+          <div class="offers-error">Could not load offers. Please try again in a moment.</div>
+          <button class="rwd-back" onclick="resetRewards()">Try again</button>
+        `;
+      }
+    }
+
+    function resetRewards() {
+      selectedAmount = null;
+      document.getElementById("rwd-username").value = "";
+      document.querySelectorAll(".robux-btn").forEach(b => b.classList.remove("selected"));
+      document.getElementById("rwd-confirm-btn").disabled = true;
+      document.getElementById("rewards-offers").style.display = "none";
+      document.getElementById("rewards-loading").style.display = "none";
+      document.getElementById("rewards-form").style.display = "block";
+    }
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
   </script>
 
 </body>
