@@ -14,6 +14,7 @@
 
     html {
       scroll-behavior: smooth;
+      scroll-snap-type: y proximity;
     }
 
     body {
@@ -25,12 +26,16 @@
     }
 
     section {
-      scroll-margin-top: 68px;
-    }
-
-    /* Rewards is full-viewport so no scroll margin needed — handled by position */
-    .rewards-section {
-      scroll-margin-top: 0;
+      min-height: 100vh;
+      min-height: 100svh;
+      scroll-margin-top: 70px;
+      scroll-snap-align: start;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 96px 20px 56px;
+      position: relative;
+      overflow: hidden;
     }
 
     .navbar {
@@ -50,7 +55,6 @@
       padding: 14px 20px;
       display: flex;
       align-items: center;
-      justify-content: flex-start;
       gap: 48px;
     }
 
@@ -88,7 +92,7 @@
       bottom: -4px;
       width: 0%;
       height: 2px;
-      background: #00b4ff;
+      background: #9ca3af;
       transition: width 0.25s ease;
     }
 
@@ -102,20 +106,25 @@
       width: 100%;
     }
 
-    .hero {
-      min-height: 100vh;
-      background:
-        linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.45)),
-        url("https://mcdn.wallpapersafari.com/medium/31/50/JxeqQal.webp") center/cover no-repeat;
-      display: flex;
-      align-items: center;
-      padding: 100px 20px 40px;
-    }
-
-    .hero-inner {
+    .section-inner,
+    .hero-inner,
+    .rewards-wrap {
       max-width: 1200px;
       margin: 0 auto;
       width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ===================== HOME ===================== */
+
+    .hero {
+      background:
+        linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.45)),
+        url("https://mcdn.wallpapersafari.com/medium/31/50/JxeqQal.webp") center/cover no-repeat;
+    }
+
+    .hero-inner {
       display: grid;
       grid-template-columns: 1.1fr 0.9fr;
       gap: 40px;
@@ -143,8 +152,8 @@
     .hero-card {
       background: rgba(0, 0, 0, 0.38);
       border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 10px;
-      padding: 28px 24px;
+      border-radius: 14px;
+      padding: 32px 26px;
       box-shadow: 0 18px 50px rgba(0,0,0,0.28);
       min-height: 320px;
       display: flex;
@@ -170,28 +179,28 @@
       color: rgba(255,255,255,0.9);
     }
 
-    .section {
-      padding: 70px 20px;
-    }
+    /* ===================== ABOUT ===================== */
 
-    .section-inner {
-      max-width: 1200px;
-      margin: 0 auto;
+    #about {
+      background: linear-gradient(180deg, #101010, #161616);
     }
 
     .about-wrap {
       display: grid;
       grid-template-columns: 1fr;
       gap: 28px;
+      align-items: center;
     }
 
     .about-box {
-      max-width: 620px;
-      margin: 0 auto 10px;
-      background: rgba(255,255,255,0.04);
-      border-radius: 10px;
-      padding: 28px;
+      max-width: 700px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 30px;
       text-align: center;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.22);
     }
 
     .about-box h1,
@@ -214,12 +223,12 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 18px;
-      margin-top: 24px;
+      margin-top: 8px;
     }
 
     .game-tile {
-      height: 220px;
-      border-radius: 12px;
+      height: clamp(150px, 22vw, 240px);
+      border-radius: 14px;
       background-size: cover;
       background-position: center;
       box-shadow: 0 10px 28px rgba(0,0,0,0.25);
@@ -231,8 +240,10 @@
       box-shadow: 0 18px 40px rgba(0,0,0,0.32);
     }
 
+    /* ===================== PLATFORMS ===================== */
+
     .device-section {
-      background: linear-gradient(180deg, #121212, #1a1a1a);
+      background: linear-gradient(180deg, #121212, #1b1b1b);
     }
 
     .device-text {
@@ -247,9 +258,11 @@
     }
 
     .device-image-wrap img {
-      max-width: 100%;
+      max-width: min(100%, 780px);
+      max-height: 38vh;
       height: auto;
       display: inline-block;
+      object-fit: contain;
     }
 
     .stores {
@@ -286,52 +299,42 @@
       display: block;
     }
 
-    /* ===================== REWARDS SECTION ===================== */
+    /* ===================== REWARDS ===================== */
 
-    /* Temporary stripped rewards placeholder.
-       Keep this section simple while switching CPA provider / landing page. */
     .rewards-section {
-      min-height: 62vh;
-      padding: 0 !important;
-      background: #0c0c0e;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      scroll-margin-top: 70px;
+      background:
+        linear-gradient(rgba(10,10,10,0.68), rgba(10,10,10,0.82)),
+        url("https://devforum-uploads.s3.dualstack.us-east-2.amazonaws.com/uploads/original/4X/7/f/3/7f3ab11ae38410b5ef9349a731c9b76173aecd4a.jpeg") center/cover no-repeat;
+      color: #d1d5db;
     }
 
     .rewards-section::before {
       content: "";
       position: absolute;
-      top: -180px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 800px;
-      height: 520px;
-      background: radial-gradient(ellipse at center, rgba(0,180,255,0.07) 0%, transparent 70%);
+      inset: 0;
+      background:
+        radial-gradient(circle at center, rgba(156,163,175,0.16), transparent 55%),
+        linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.38));
       pointer-events: none;
+      z-index: 1;
     }
 
     .rewards-wrap {
-      position: relative;
-      z-index: 1;
-      width: 100%;
       max-width: 900px;
-      margin: 0 auto;
-      padding: 110px 20px 90px;
       text-align: center;
     }
 
     .rewards-placeholder {
       width: 100%;
-      max-width: 560px;
+      max-width: 600px;
       margin: 0 auto;
-      background: rgba(255,255,255,0.035);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 14px;
-      padding: 36px 26px;
-      box-shadow: 0 18px 50px rgba(0,0,0,0.24);
+      background: rgba(35, 35, 35, 0.72);
+      border: 1px solid rgba(209,213,219,0.22);
+      border-radius: 16px;
+      padding: 42px 28px;
+      box-shadow: 0 22px 60px rgba(0,0,0,0.38);
+      backdrop-filter: blur(8px);
     }
 
     .rewards-eyebrow {
@@ -339,7 +342,7 @@
       font-weight: 700;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: #00b4ff;
+      color: #9ca3af;
       margin-bottom: 14px;
     }
 
@@ -349,16 +352,17 @@
       letter-spacing: -0.5px;
       margin: 0 0 14px;
       line-height: 1.05;
+      color: #e5e7eb;
     }
 
     .rewards-sub {
       font-size: 18px;
-      color: rgba(255,255,255,0.52);
+      color: #c4c4c4;
       margin: 0;
       line-height: 1.5;
     }
 
-    /* ===================== END REWARDS ===================== */
+    /* ===================== FOOTER ===================== */
 
     footer {
       background: #0d0d0d;
@@ -389,9 +393,16 @@
       line-height: 1.5;
     }
 
+    /* ===================== RESPONSIVE ===================== */
+
     @media (max-width: 900px) {
+      section {
+        padding: 96px 18px 48px;
+      }
+
       .hero-inner {
         grid-template-columns: 1fr;
+        gap: 26px;
       }
 
       .hero-left {
@@ -401,22 +412,26 @@
       .hero-card {
         order: 2;
         min-height: auto;
+        padding: 28px 22px;
       }
 
       .game-grid {
         grid-template-columns: 1fr;
+        max-width: 520px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .game-tile {
+        height: 170px;
       }
 
       .nav-inner {
         gap: 18px;
       }
 
-      .offers-grid {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      }
-
-      .rewards-wrap {
-        padding: 90px 16px 60px;
+      .device-image-wrap img {
+        max-height: 32vh;
       }
 
       .rewards-title {
@@ -425,14 +440,28 @@
     }
 
     @media (max-width: 560px) {
+      html {
+        scroll-snap-type: none;
+      }
+
+      section {
+        min-height: 100svh;
+        scroll-margin-top: 108px;
+        padding: 128px 16px 44px;
+      }
+
       .nav-inner {
         flex-direction: column;
         align-items: flex-start;
+        gap: 10px;
+        padding: 12px 16px;
       }
 
       .nav-links {
+        width: 100%;
         margin-left: 0;
-        gap: 14px;
+        gap: 12px;
+        justify-content: space-between;
       }
 
       .brand {
@@ -440,7 +469,15 @@
       }
 
       .fake-link {
-        font-size: 16px;
+        font-size: 15px;
+      }
+
+      .hero-logo {
+        font-size: clamp(52px, 16vw, 84px);
+      }
+
+      .hero-sub {
+        font-size: 18px;
       }
 
       .hero-card h3 {
@@ -449,46 +486,48 @@
 
       .hero-card p,
       .about-box p,
-      .device-text p {
-        font-size: 18px;
+      .device-text p,
+      .rewards-sub {
+        font-size: 17px;
       }
 
-      .section {
-        padding: 56px 16px;
+      .about-box {
+        padding: 24px 18px;
       }
 
-      .robux-btn {
-        font-size: 16px;
+      .game-grid {
+        gap: 12px;
       }
 
-      .rewards-panel {
-        max-width: 100%;
+      .game-tile {
+        height: 120px;
       }
 
-      .robux-options {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
+      .device-image-wrap {
+        margin-top: 24px;
       }
 
-      .robux-btn-amount {
-        font-size: 20px;
+      .device-image-wrap img {
+        max-height: 24vh;
       }
 
-      .offers-grid {
-        grid-template-columns: 1fr 1fr;
+      .stores {
         gap: 10px;
+        margin-top: 20px;
       }
 
-      .offer-card {
-        padding: 16px 12px 14px;
+      .store-badge {
+        min-width: 120px;
+        padding: 9px 10px;
       }
 
-      .offers-meta h3 {
-        font-size: 22px;
+      .store-badge img {
+        max-height: 32px;
       }
 
-      .rwd-loading {
-        min-height: 50vh;
+      .rewards-placeholder {
+        padding: 32px 18px;
+        border-radius: 14px;
       }
     }
   </style>
@@ -500,10 +539,10 @@
       <div class="brand">ROBLOX</div>
 
       <nav class="nav-links" aria-label="Main navigation">
-        <a href="#home"     class="fake-link nav-link active">Home</a>
-        <a href="#about"    class="fake-link nav-link">About</a>
+        <a href="#home" class="fake-link nav-link active">Home</a>
+        <a href="#about" class="fake-link nav-link">About</a>
         <a href="#platforms" class="fake-link nav-link">Platforms</a>
-        <a href="#rewards"  class="fake-link nav-link">Rewards</a>
+        <a href="#rewards" class="fake-link nav-link">Rewards</a>
       </nav>
     </div>
   </header>
@@ -529,13 +568,13 @@
     </section>
 
     <!-- ABOUT -->
-    <section id="about" class="section">
+    <section id="about">
       <div class="section-inner about-wrap">
         <div class="about-box">
           <h1>WHAT IS R0BL0X?</h1>
           <p>
-            It is a simple rewards program with a free rewards,
-            featured visuals, and all device support, gaming landing page.
+            It is a simple rewards program with free rewards,
+            featured visuals, and all-device support for a gaming landing page.
           </p>
         </div>
 
@@ -548,7 +587,7 @@
     </section>
 
     <!-- PLATFORMS -->
-    <section id="platforms" class="section device-section">
+    <section id="platforms" class="device-section">
       <div class="section-inner">
         <div class="device-text">
           <h2>ON YOUR DEVICE</h2>
@@ -610,7 +649,7 @@
     function setActiveLink() {
       let current = "home";
       sections.forEach(section => {
-        const top = section.getBoundingClientRect().top + window.scrollY - 120;
+        const top = section.getBoundingClientRect().top + window.scrollY - 140;
         if (window.scrollY >= top) current = section.id;
       });
       links.forEach(link => {
