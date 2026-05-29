@@ -104,15 +104,9 @@
 
     .hero {
       min-height: 100vh;
-  .hero {
-  min-height: 100vh;
-  background:
-    linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.45)),
-    url("Home.jpg") center/cover no-repeat;
-  display: flex;
-  align-items: center;
-  padding: 100px 20px 40px;
-}
+      background:
+        linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.45)),
+        url("https://mcdn.wallpapersafari.com/medium/31/50/JxeqQal.webp") center/cover no-repeat;
       display: flex;
       align-items: center;
       padding: 100px 20px 40px;
@@ -506,7 +500,7 @@
       <div class="brand">ROBLOX</div>
 
       <nav class="nav-links" aria-label="Main navigation">
-        <a href="#play"     class="fake-link nav-link active">Play</a>
+        <a href="#home"     class="fake-link nav-link active">Home</a>
         <a href="#about"    class="fake-link nav-link">About</a>
         <a href="#platforms" class="fake-link nav-link">Platforms</a>
         <a href="#rewards"  class="fake-link nav-link">Rewards</a>
@@ -515,8 +509,8 @@
   </header>
 
   <main>
-    <!-- PLAY -->
-    <section id="play" class="hero">
+    <!-- HOME -->
+    <section id="home" class="hero">
       <div class="hero-inner">
         <div class="hero-left">
           <h1 class="hero-logo">R0BL0X</h1>
@@ -614,7 +608,7 @@
     const sections = document.querySelectorAll("main section");
 
     function setActiveLink() {
-      let current = "play";
+      let current = "home";
       sections.forEach(section => {
         const top = section.getBoundingClientRect().top + window.scrollY - 120;
         if (window.scrollY >= top) current = section.id;
