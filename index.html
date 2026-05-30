@@ -14,7 +14,6 @@
 
     html {
       scroll-behavior: smooth;
-      scroll-snap-type: y proximity;
     }
 
     body {
@@ -29,7 +28,6 @@
       min-height: 100vh;
       min-height: 100svh;
       scroll-margin-top: 70px;
-      scroll-snap-align: start;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -55,6 +53,7 @@
       padding: 14px 20px;
       display: flex;
       align-items: center;
+      justify-content: flex-start;
       gap: 48px;
     }
 
@@ -108,7 +107,7 @@
 
     .section-inner,
     .hero-inner,
-    .rewards-wrap {
+    .rwd-wrap {
       max-width: 1200px;
       margin: 0 auto;
       width: 100%;
@@ -299,791 +298,347 @@
       display: block;
     }
 
-    <style>
-  /* ===================== REWARDS ===================== */
+    /* ===================== REWARDS ===================== */
 
-  .rewards-section {
-    min-height: 100vh;
-    min-height: 100svh;
-    scroll-margin-top: 70px;
-    padding: 96px 20px 56px;
-    background:
-      linear-gradient(rgba(10,10,10,0.68), rgba(10,10,10,0.84)),
-      url("https://devforum-uploads.s3.dualstack.us-east-2.amazonaws.com/uploads/original/4X/7/f/3/7f3ab11ae38410b5ef9349a731c9b76173aecd4a.jpeg") center/cover no-repeat;
-    color: #d1d5db;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .rewards-section::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(circle at center, rgba(156,163,175,0.18), transparent 55%),
-      linear-gradient(180deg, rgba(0,0,0,0.10), rgba(0,0,0,0.45));
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  .rewards-wrap {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    max-width: 760px;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .rewards-panel {
-    width: 100%;
-    background: rgba(35, 35, 35, 0.78);
-    border: 1px solid rgba(209,213,219,0.22);
-    border-radius: 20px;
-    padding: 34px 28px;
-    box-shadow: 0 24px 70px rgba(0,0,0,0.42);
-    backdrop-filter: blur(10px);
-    animation: rewardFadeUp 0.45s ease both;
-  }
-
-  @keyframes rewardFadeUp {
-    from {
-      opacity: 0;
-      transform: translateY(18px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .reward-step {
-    display: none;
-    animation: rewardFadeUp 0.35s ease both;
-  }
-
-  .reward-step.active {
-    display: block;
-  }
-
-  .rewards-eyebrow {
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: #9ca3af;
-    margin-bottom: 12px;
-  }
-
-  .rewards-title {
-    font-size: clamp(30px, 5vw, 50px);
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    margin: 0 0 12px;
-    line-height: 1.05;
-    color: #e5e7eb;
-  }
-
-  .rewards-sub {
-    font-size: 18px;
-    color: #c4c4c4;
-    margin: 0 auto 24px;
-    line-height: 1.5;
-    max-width: 540px;
-  }
-
-  .reward-input {
-    width: 100%;
-    max-width: 420px;
-    background: rgba(17, 17, 17, 0.72);
-    border: 1px solid rgba(209,213,219,0.24);
-    color: #e5e7eb;
-    outline: none;
-    border-radius: 12px;
-    padding: 14px 15px;
-    font-size: 17px;
-    text-align: center;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-  }
-
-  .reward-input:focus {
-    border-color: rgba(209,213,219,0.55);
-    box-shadow: 0 0 0 4px rgba(156,163,175,0.13);
-    background: rgba(15, 15, 15, 0.86);
-  }
-
-  .reward-btn {
-    border: 0;
-    outline: none;
-    cursor: pointer;
-    margin-top: 18px;
-    padding: 13px 22px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #9ca3af, #6b7280);
-    color: #111;
-    font-size: 16px;
-    font-weight: 700;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
-  }
-
-  .reward-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.28);
-  }
-
-  .reward-btn:disabled {
-    opacity: 0.55;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-  }
-
-  .reward-secondary-btn {
-    background: rgba(255,255,255,0.08);
-    color: #d1d5db;
-    border: 1px solid rgba(209,213,219,0.18);
-  }
-
-  .reward-error {
-    display: none;
-    margin: 14px auto 0;
-    max-width: 440px;
-    color: #fca5a5;
-    font-size: 15px;
-    line-height: 1.4;
-  }
-
-  .reward-error.show {
-    display: block;
-  }
-
-  .reward-loader {
-    width: 72px;
-    height: 72px;
-    margin: 10px auto 24px;
-    border-radius: 50%;
-    border: 5px solid rgba(209,213,219,0.18);
-    border-top-color: #d1d5db;
-    animation: rewardSpin 0.9s linear infinite;
-  }
-
-  @keyframes rewardSpin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  .reward-check {
-    width: 84px;
-    height: 84px;
-    margin: 0 auto 22px;
-    border-radius: 50%;
-    background: rgba(156,163,175,0.16);
-    border: 1px solid rgba(209,213,219,0.24);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #e5e7eb;
-    font-size: 44px;
-    animation: rewardPop 0.45s ease both;
-  }
-
-  @keyframes rewardPop {
-    0% {
-      transform: scale(0.75);
-      opacity: 0;
-    }
-
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-
-  .robux-options {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    max-width: 480px;
-    margin: 18px auto 0;
-  }
-
-  .robux-option {
-    border: 1px solid rgba(209,213,219,0.18);
-    background: rgba(255,255,255,0.06);
-    color: #d1d5db;
-    border-radius: 14px;
-    padding: 18px 12px;
-    cursor: pointer;
-    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-  }
-
-  .robux-option:hover,
-  .robux-option.selected {
-    transform: translateY(-3px);
-    border-color: rgba(229,231,235,0.55);
-    background: rgba(229,231,235,0.14);
-  }
-
-  .robux-amount {
-    display: block;
-    font-size: 28px;
-    font-weight: 700;
-    color: #f3f4f6;
-  }
-
-  .robux-label {
-    display: block;
-    margin-top: 4px;
-    font-size: 14px;
-    color: #a1a1aa;
-  }
-
-  .account-card {
-    max-width: 420px;
-    margin: 20px auto 0;
-    background: rgba(255,255,255,0.055);
-    border: 1px solid rgba(209,213,219,0.18);
-    border-radius: 18px;
-    padding: 24px 18px;
-  }
-
-  .account-avatar {
-    width: 128px;
-    height: 128px;
-    object-fit: cover;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(209,213,219,0.22);
-    box-shadow: 0 14px 35px rgba(0,0,0,0.26);
-  }
-
-  .account-name {
-    margin: 14px 0 4px;
-    font-size: 25px;
-    font-weight: 700;
-    color: #f3f4f6;
-    word-break: break-word;
-  }
-
-  .account-amount {
-    margin: 0;
-    color: #b9b9b9;
-    font-size: 16px;
-  }
-
-  .offers-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 14px;
-    margin-top: 22px;
-  }
-
-  .offer {
-    background: rgba(255,255,255,0.065);
-    border: 1px solid rgba(209,213,219,0.18);
-    padding: 18px;
-    border-radius: 16px;
-    text-align: left;
-    animation: rewardFadeUp 0.35s ease both;
-  }
-
-  .offer h2 {
-    margin: 0 0 8px;
-    color: #e5e7eb;
-    font-size: 20px;
-    line-height: 1.25;
-  }
-
-  .offer p {
-    margin: 0;
-    color: #bdbdbd;
-    font-size: 15px;
-  }
-
-  .offer .btn {
-    display: inline-block;
-    margin-top: 14px;
-    padding: 10px 14px;
-    background: linear-gradient(135deg, #9ca3af, #6b7280);
-    color: #111;
-    text-decoration: none;
-    border-radius: 10px;
-    font-weight: 700;
-    font-size: 14px;
-  }
-
-  .offer-loading {
-    color: #c4c4c4;
-    font-size: 16px;
-    margin-top: 18px;
-  }
-
-  .reward-disclaimer {
-    margin: 18px auto 0;
-    max-width: 560px;
-    color: rgba(209,213,219,0.62);
-    font-size: 13px;
-    line-height: 1.45;
-  }
-
-  .reward-toast {
-    position: fixed;
-    left: 50%;
-    bottom: 26px;
-    transform: translateX(-50%) translateY(18px);
-    z-index: 2000;
-    background: rgba(20, 20, 20, 0.94);
-    border: 1px solid rgba(209,213,219,0.22);
-    color: #e5e7eb;
-    padding: 14px 18px;
-    border-radius: 12px;
-    box-shadow: 0 18px 45px rgba(0,0,0,0.34);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s ease, transform 0.25s ease;
-  }
-
-  .reward-toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-
-  @media (max-width: 560px) {
     .rewards-section {
-      min-height: 100svh;
-      scroll-margin-top: 108px;
-      padding: 128px 16px 44px;
+      background:
+        linear-gradient(rgba(10, 10, 10, 0.70), rgba(10, 10, 10, 0.86)),
+        url("https://devforum-uploads.s3.dualstack.us-east-2.amazonaws.com/uploads/original/4X/7/f/3/7f3ab11ae38410b5ef9349a731c9b76173aecd4a.jpeg") center/cover no-repeat;
+      color: #d1d5db;
     }
 
-    .rewards-panel {
-      padding: 28px 18px;
-      border-radius: 18px;
+    .rewards-section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 45%, rgba(156, 163, 175, 0.18), transparent 48%),
+        linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.42));
+      z-index: 1;
+      pointer-events: none;
     }
 
-    .rewards-title {
-      font-size: 32px;
+    .rwd-wrap {
+      max-width: 760px;
     }
 
-    .rewards-sub {
-      font-size: 16px;
+    .rwd-panel {
+      width: 100%;
+      background: rgba(31, 31, 31, 0.82);
+      border: 1px solid rgba(209, 213, 219, 0.22);
+      border-radius: 22px;
+      padding: 34px 28px;
+      text-align: center;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.46);
+      backdrop-filter: blur(10px);
     }
 
-    .robux-options {
-      grid-template-columns: 1fr;
-      gap: 10px;
+    .rwd-step {
+      display: none;
+      animation: rwdFadeUp 0.35s ease both;
     }
 
-    .robux-option {
-      padding: 14px 12px;
+    .rwd-step.rwd-active {
+      display: block;
     }
 
-    .robux-amount {
-      font-size: 24px;
+    @keyframes rwdFadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    .account-avatar {
-      width: 112px;
-      height: 112px;
+    .rwd-eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #9ca3af;
+      margin-bottom: 12px;
     }
 
-    .offer {
-      padding: 16px;
+    .rwd-title {
+      margin: 0 0 12px;
+      font-size: clamp(30px, 5vw, 50px);
+      line-height: 1.05;
+      font-weight: 700;
+      color: #e5e7eb;
     }
 
-    .reward-toast {
-      width: calc(100% - 32px);
+    .rwd-sub {
+      margin: 0 auto 24px;
+      max-width: 540px;
+      color: #c4c4c4;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+
+    .rwd-input {
+      width: 100%;
+      max-width: 420px;
+      padding: 14px 15px;
+      border-radius: 13px;
+      border: 1px solid rgba(209, 213, 219, 0.24);
+      background: rgba(15, 15, 15, 0.78);
+      color: #e5e7eb;
+      outline: none;
+      font-size: 17px;
       text-align: center;
     }
-  }
-</style>
 
-<section id="rewards" class="rewards-section">
-  <div class="rewards-wrap">
-    <div class="rewards-panel">
-
-      <div class="reward-step active" id="rewardStepCode">
-        <div class="rewards-eyebrow">Access Required</div>
-        <h2 class="rewards-title">Enter Secret Code</h2>
-        <p class="rewards-sub">
-          Enter your access code to unlock the reward verification page.
-        </p>
-
-        <input
-          id="secretCodeInput"
-          class="reward-input"
-          type="password"
-          placeholder="Enter code"
-          autocomplete="off"
-        >
-
-        <br>
-
-        <button class="reward-btn" id="secretCodeBtn">
-          Continue
-        </button>
-
-        <p class="reward-error" id="codeError">
-          Invalid code. Please check it and try again.
-        </p>
-      </div>
-
-      <div class="reward-step" id="rewardStepVerify">
-        <div class="reward-loader"></div>
-        <div class="rewards-eyebrow">Checking Access</div>
-        <h2 class="rewards-title">Verifying Code</h2>
-        <p class="rewards-sub">
-          Please wait while your access is being verified.
-        </p>
-      </div>
-
-      <div class="reward-step" id="rewardStepSuccess">
-        <div class="reward-check">✓</div>
-        <div class="rewards-eyebrow">Access Verified</div>
-        <h2 class="rewards-title">Congratulations</h2>
-        <p class="rewards-sub">
-          Your access has been approved. Continue to select your reward.
-        </p>
-
-        <button class="reward-btn" id="goToDetailsBtn">
-          Continue
-        </button>
-      </div>
-
-      <div class="reward-step" id="rewardStepDetails">
-        <div class="rewards-eyebrow">Reward Setup</div>
-        <h2 class="rewards-title">Enter Your Username</h2>
-        <p class="rewards-sub">
-          Enter your username, then select your reward amount.
-        </p>
-
-        <input
-          id="robloxUsernameInput"
-          class="reward-input"
-          type="text"
-          placeholder="Username"
-          autocomplete="off"
-        >
-
-        <div class="robux-options">
-          <button class="robux-option" data-amount="180" type="button">
-            <span class="robux-amount">180</span>
-            <span class="robux-label">Robux</span>
-          </button>
-
-          <button class="robux-option" data-amount="340" type="button">
-            <span class="robux-amount">340</span>
-            <span class="robux-label">Robux</span>
-          </button>
-
-          <button class="robux-option" data-amount="620" type="button">
-            <span class="robux-amount">620</span>
-            <span class="robux-label">Robux</span>
-          </button>
-        </div>
-
-        <br>
-
-        <button class="reward-btn" id="findAccountBtn">
-          Find Account
-        </button>
-
-        <p class="reward-error" id="detailsError">
-          Please enter a valid username and select an amount.
-        </p>
-      </div>
-
-      <div class="reward-step" id="rewardStepAccount">
-        <div class="rewards-eyebrow">Account Found</div>
-        <h2 class="rewards-title">Confirm Account</h2>
-        <p class="rewards-sub">
-          Make sure this is the correct account before continuing.
-        </p>
-
-        <div class="account-card">
-          <img id="accountAvatar" class="account-avatar" src="" alt="Account avatar">
-          <h3 id="accountName" class="account-name">Username</h3>
-          <p id="accountAmount" class="account-amount">Selected amount</p>
-        </div>
-
-        <button class="reward-btn" id="confirmAccountBtn">
-          Confirm This Account
-        </button>
-
-        <button class="reward-btn reward-secondary-btn" id="backToDetailsBtn" type="button">
-          Change Details
-        </button>
-      </div>
-
-      <div class="reward-step" id="rewardStepOffers">
-        <div class="rewards-eyebrow">Final Step</div>
-        <h2 class="rewards-title">Complete Tasks</h2>
-        <p class="rewards-sub">
-          Complete the available partner tasks below to continue.
-        </p>
-
-        <div id="offers" class="offers-grid">
-          <div class="offer-loading">Loading available offers...</div>
-        </div>
-
-        <button class="reward-btn" id="completedTasksBtn">
-          Completed Tasks
-        </button>
-
-        <p class="reward-disclaimer">
-        Partner task availability may vary by region.
-        </p>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="reward-toast" id="rewardToast">
-    Tasks not completed yet. Please complete the required tasks first.
-  </div>
-</section>
-
-<script>
-  const rewardSteps = {
-    code: document.getElementById("rewardStepCode"),
-    verify: document.getElementById("rewardStepVerify"),
-    success: document.getElementById("rewardStepSuccess"),
-    details: document.getElementById("rewardStepDetails"),
-    account: document.getElementById("rewardStepAccount"),
-    offers: document.getElementById("rewardStepOffers")
-  };
-
-  const rewardState = {
-    username: "",
-    userId: null,
-    selectedAmount: null,
-    offersLoaded: false
-  };
-
-  function showRewardStep(stepName) {
-    Object.values(rewardSteps).forEach(step => {
-      step.classList.remove("active");
-    });
-
-    rewardSteps[stepName].classList.add("active");
-  }
-
-  function showRewardError(id, message) {
-    const error = document.getElementById(id);
-    error.textContent = message;
-    error.classList.add("show");
-  }
-
-  function hideRewardError(id) {
-    document.getElementById(id).classList.remove("show");
-  }
-
-  function showRewardToast(message) {
-    const toast = document.getElementById("rewardToast");
-    toast.textContent = message;
-    toast.classList.add("show");
-
-    setTimeout(() => {
-      toast.classList.remove("show");
-    }, 2600);
-  }
-
-  document.getElementById("secretCodeBtn").addEventListener("click", () => {
-    const enteredCode = document.getElementById("secretCodeInput").value.trim();
-    const correctCode = atob("QkxPWFkyMDI2");
-
-    hideRewardError("codeError");
-
-    if (enteredCode !== correctCode) {
-      showRewardError("codeError", "Invalid code. Please check it and try again.");
-      return;
+    .rwd-input:focus {
+      border-color: rgba(229, 231, 235, 0.55);
+      box-shadow: 0 0 0 4px rgba(156, 163, 175, 0.14);
     }
 
-    showRewardStep("verify");
-
-    setTimeout(() => {
-      showRewardStep("success");
-    }, 1800);
-  });
-
-  document.getElementById("secretCodeInput").addEventListener("keydown", event => {
-    if (event.key === "Enter") {
-      document.getElementById("secretCodeBtn").click();
-    }
-  });
-
-  document.getElementById("goToDetailsBtn").addEventListener("click", () => {
-    showRewardStep("details");
-  });
-
-  document.querySelectorAll(".robux-option").forEach(button => {
-    button.addEventListener("click", () => {
-      document.querySelectorAll(".robux-option").forEach(btn => {
-        btn.classList.remove("selected");
-      });
-
-      button.classList.add("selected");
-      rewardState.selectedAmount = button.dataset.amount;
-      hideRewardError("detailsError");
-    });
-  });
-
-  document.getElementById("findAccountBtn").addEventListener("click", async () => {
-    const usernameInput = document.getElementById("robloxUsernameInput");
-    const username = usernameInput.value.trim();
-
-    hideRewardError("detailsError");
-
-    if (!username || /\s/.test(username)) {
-      showRewardError("detailsError", "Username cannot be empty and cannot contain spaces.");
-      return;
+    .rwd-btn {
+      margin-top: 18px;
+      border: 0;
+      outline: none;
+      cursor: pointer;
+      padding: 13px 22px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, #d1d5db, #8b929d);
+      color: #101010;
+      font-size: 16px;
+      font-weight: 700;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
     }
 
-    if (!rewardState.selectedAmount) {
-      showRewardError("detailsError", "Please select a Robux amount.");
-      return;
+    .rwd-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.30);
     }
 
-    const btn = document.getElementById("findAccountBtn");
-    btn.disabled = true;
-    btn.textContent = "Finding Account...";
+    .rwd-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
 
-    try {
-      const userId = await getRobloxUserId(username);
+    .rwd-error {
+      display: none;
+      margin: 14px auto 0;
+      max-width: 440px;
+      color: #fca5a5;
+      font-size: 15px;
+      line-height: 1.4;
+    }
 
-      if (!userId) {
-        showRewardError("detailsError", "Account not found. Please check the username.");
-        return;
+    .rwd-error.rwd-show {
+      display: block;
+    }
+
+    .rwd-loader {
+      width: 72px;
+      height: 72px;
+      margin: 8px auto 24px;
+      border-radius: 50%;
+      border: 5px solid rgba(209, 213, 219, 0.18);
+      border-top-color: #d1d5db;
+      animation: rwdSpin 0.9s linear infinite;
+    }
+
+    @keyframes rwdSpin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .rwd-check {
+      width: 84px;
+      height: 84px;
+      margin: 0 auto 22px;
+      border-radius: 50%;
+      background: rgba(156, 163, 175, 0.16);
+      border: 1px solid rgba(209, 213, 219, 0.24);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #e5e7eb;
+      font-size: 44px;
+      animation: rwdPop 0.4s ease both;
+    }
+
+    @keyframes rwdPop {
+      from {
+        opacity: 0;
+        transform: scale(0.75);
       }
 
-      rewardState.username = username;
-      rewardState.userId = userId;
-
-      const avatarUrl = await getRobloxAvatar(userId);
-
-      document.getElementById("accountAvatar").src = avatarUrl;
-      document.getElementById("accountName").textContent = username;
-      document.getElementById("accountAmount").textContent = rewardState.selectedAmount + " Robux selected";
-
-      showRewardStep("account");
-    } catch (err) {
-      console.log(err);
-      showRewardError("detailsError", "Could not load account details. Please try again.");
-    } finally {
-      btn.disabled = false;
-      btn.textContent = "Find Account";
-    }
-  });
-
-  document.getElementById("backToDetailsBtn").addEventListener("click", () => {
-    showRewardStep("details");
-  });
-
-  document.getElementById("confirmAccountBtn").addEventListener("click", () => {
-    showRewardStep("offers");
-
-    if (!rewardState.offersLoaded) {
-      loadOffers();
-    }
-  });
-
-  document.getElementById("completedTasksBtn").addEventListener("click", () => {
-    showRewardToast("Tasks not completed yet. Please complete the required tasks first.");
-  });
-
-  async function getRobloxUserId(username) {
-    const res = await fetch("https://users.roblox.com/v1/usernames/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        usernames: [username],
-        excludeBannedUsers: true
-      })
-    });
-
-    const data = await res.json();
-
-    if (!data.data || !data.data[0]) {
-      return null;
-    }
-
-    return data.data[0].id;
-  }
-
-  async function getRobloxAvatar(userId) {
-    const res = await fetch(
-      "https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=" +
-      encodeURIComponent(userId) +
-      "&size=150x150&format=Png&isCircular=true"
-    );
-
-    const data = await res.json();
-
-    if (data.data && data.data[0] && data.data[0].imageUrl) {
-      return data.data[0].imageUrl;
-    }
-
-    return "https://tr.rbxcdn.com/30DAY-AvatarHeadshot-C326F3F09C3B2E1FC98B514326D4ED6D-Png/150/150/AvatarHeadshot/Webp/noFilter";
-  }
-
-  async function loadOffers() {
-    try {
-      const res = await fetch("/api/offers");
-
-      const offers = await res.json();
-
-      const container = document.getElementById("offers");
-
-      container.innerHTML = "";
-
-      const topOffers = offers.slice(0, 3);
-
-      if (!topOffers.length) {
-        container.innerHTML = '<div class="offer-loading">No offers available right now. Please try again later.</div>';
-        return;
+      to {
+        opacity: 1;
+        transform: scale(1);
       }
-
-      topOffers.forEach(offer => {
-        const div = document.createElement("div");
-
-        div.className = "offer";
-
-        const title = document.createElement("h2");
-        title.textContent = offer.anchor || "Offer";
-
-        const reward = document.createElement("p");
-        reward.textContent = "Reward: " + (offer.conversion || "N/A");
-
-        const link = document.createElement("a");
-        link.className = "btn";
-        link.href = offer.url;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        link.textContent = "Complete Offer";
-
-        div.appendChild(title);
-        div.appendChild(reward);
-        div.appendChild(link);
-
-        container.appendChild(div);
-      });
-
-      rewardState.offersLoaded = true;
-    } catch (err) {
-      console.log(err);
-
-      const container = document.getElementById("offers");
-
-      container.innerHTML = '<div class="offer-loading">Could not load offers. Please refresh and try again.</div>';
     }
-  }
-</script>
+
+    .rwd-amounts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 500px;
+      margin: 18px auto 0;
+    }
+
+    .rwd-amount-btn {
+      border: 1px solid rgba(209, 213, 219, 0.18);
+      background: rgba(255,255,255,0.065);
+      color: #d1d5db;
+      border-radius: 15px;
+      padding: 18px 12px;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .rwd-amount-btn:hover,
+    .rwd-amount-btn.rwd-selected {
+      transform: translateY(-3px);
+      border-color: rgba(229, 231, 235, 0.58);
+      background: rgba(229, 231, 235, 0.14);
+    }
+
+    .rwd-amount-number {
+      display: block;
+      font-size: 28px;
+      font-weight: 700;
+      color: #f3f4f6;
+    }
+
+    .rwd-amount-label {
+      display: block;
+      margin-top: 4px;
+      font-size: 14px;
+      color: #a1a1aa;
+    }
+
+    .rwd-summary {
+      max-width: 520px;
+      margin: 20px auto 0;
+      padding: 18px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.055);
+      border: 1px solid rgba(209, 213, 219, 0.18);
+      color: #d1d5db;
+    }
+
+    .rwd-summary strong {
+      color: #f3f4f6;
+    }
+
+    .rwd-offers {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .rwd-offer-card {
+      background: rgba(255,255,255,0.065);
+      border: 1px solid rgba(209, 213, 219, 0.18);
+      border-radius: 16px;
+      padding: 18px;
+      text-align: left;
+      animation: rwdFadeUp 0.35s ease both;
+    }
+
+    .rwd-offer-card h3 {
+      margin: 0 0 8px;
+      color: #e5e7eb;
+      font-size: 20px;
+      line-height: 1.25;
+    }
+
+    .rwd-offer-card p {
+      margin: 0;
+      color: #bdbdbd;
+      font-size: 15px;
+    }
+
+    .rwd-offer-link {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: linear-gradient(135deg, #d1d5db, #8b929d);
+      color: #101010;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .rwd-loading {
+      color: #c4c4c4;
+      font-size: 16px;
+      margin-top: 18px;
+    }
+
+    .rwd-note {
+      margin: 18px auto 0;
+      max-width: 560px;
+      color: rgba(209, 213, 219, 0.62);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .rwd-toast {
+      position: fixed;
+      left: 50%;
+      bottom: 26px;
+      transform: translateX(-50%) translateY(18px);
+      z-index: 3000;
+      background: rgba(20, 20, 20, 0.96);
+      border: 1px solid rgba(209, 213, 219, 0.22);
+      color: #e5e7eb;
+      padding: 14px 18px;
+      border-radius: 12px;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.34);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .rwd-toast.rwd-show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ===================== FOOTER ===================== */
+
+    footer {
+      background: #0d0d0d;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 28px 20px 36px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 18px 24px;
+      margin: 0 0 18px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .footer-note {
+      margin: 0;
+      color: rgba(255,255,255,0.68);
+      font-size: 15px;
+      line-height: 1.5;
+    }
 
     /* ===================== RESPONSIVE ===================== */
 
@@ -1125,17 +680,9 @@
       .device-image-wrap img {
         max-height: 32vh;
       }
-
-      .rewards-title {
-        font-size: clamp(32px, 8vw, 56px);
-      }
     }
 
     @media (max-width: 560px) {
-      html {
-        scroll-snap-type: none;
-      }
-
       section {
         min-height: 100svh;
         scroll-margin-top: 108px;
@@ -1179,7 +726,7 @@
       .hero-card p,
       .about-box p,
       .device-text p,
-      .rewards-sub {
+      .rwd-sub {
         font-size: 17px;
       }
 
@@ -1217,9 +764,35 @@
         max-height: 32px;
       }
 
-      .rewards-placeholder {
-        padding: 32px 18px;
-        border-radius: 14px;
+      .rwd-panel {
+        padding: 28px 18px;
+        border-radius: 18px;
+      }
+
+      .rwd-title {
+        font-size: 32px;
+      }
+
+      .rwd-amounts {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .rwd-amount-btn {
+        padding: 14px 12px;
+      }
+
+      .rwd-amount-number {
+        font-size: 24px;
+      }
+
+      .rwd-offer-card {
+        padding: 16px;
+      }
+
+      .rwd-toast {
+        width: calc(100% - 32px);
+        text-align: center;
       }
     }
   </style>
@@ -1304,14 +877,130 @@
 
     <!-- REWARDS -->
     <section id="rewards" class="rewards-section">
-      <div class="rewards-wrap">
-        <div class="rewards-placeholder">
-          <div class="rewards-eyebrow">Rewards</div>
-          <h2 class="rewards-title">Rewards section is being updated</h2>
-          <p class="rewards-sub">
-            New CPA provider flow will be added here. Current offer fetching and old reward form are removed for now.
-          </p>
+      <div class="rwd-wrap">
+        <div class="rwd-panel">
+
+          <div class="rwd-step rwd-active" id="rwdStepCode">
+            <div class="rwd-eyebrow">Access Required</div>
+            <h2 class="rwd-title">Enter Secret Code</h2>
+            <p class="rwd-sub">
+              Enter your access code to unlock the rewards page.
+            </p>
+
+            <input
+              id="rwdSecretInput"
+              class="rwd-input"
+              type="password"
+              placeholder="Enter code"
+              autocomplete="off"
+            >
+
+            <br>
+
+            <button class="rwd-btn" id="rwdCodeBtn" type="button">
+              Continue
+            </button>
+
+            <p class="rwd-error" id="rwdCodeError">
+              Invalid code. Please check it and try again.
+            </p>
+          </div>
+
+          <div class="rwd-step" id="rwdStepVerifying">
+            <div class="rwd-loader"></div>
+            <div class="rwd-eyebrow">Checking Access</div>
+            <h2 class="rwd-title">Verifying Code</h2>
+            <p class="rwd-sub">
+              Please wait while your access is being verified.
+            </p>
+          </div>
+
+          <div class="rwd-step" id="rwdStepSuccess">
+            <div class="rwd-check">✓</div>
+            <div class="rwd-eyebrow">Access Verified</div>
+            <h2 class="rwd-title">Congratulations</h2>
+            <p class="rwd-sub">
+              Your access has been approved. Continue to select your reward.
+            </p>
+
+            <button class="rwd-btn" id="rwdGoDetailsBtn" type="button">
+              Continue
+            </button>
+          </div>
+
+          <div class="rwd-step" id="rwdStepDetails">
+            <div class="rwd-eyebrow">Reward Setup</div>
+            <h2 class="rwd-title">Choose Your Reward</h2>
+            <p class="rwd-sub">
+              Enter your username without spaces and select your Robux amount.
+            </p>
+
+            <input
+              id="rwdUsernameInput"
+              class="rwd-input"
+              type="text"
+              placeholder="Username"
+              autocomplete="off"
+            >
+
+            <div class="rwd-amounts">
+              <button class="rwd-amount-btn" data-amount="180" type="button">
+                <span class="rwd-amount-number">180</span>
+                <span class="rwd-amount-label">Robux</span>
+              </button>
+
+              <button class="rwd-amount-btn" data-amount="340" type="button">
+                <span class="rwd-amount-number">340</span>
+                <span class="rwd-amount-label">Robux</span>
+              </button>
+
+              <button class="rwd-amount-btn" data-amount="620" type="button">
+                <span class="rwd-amount-number">620</span>
+                <span class="rwd-amount-label">Robux</span>
+              </button>
+            </div>
+
+            <br>
+
+            <button class="rwd-btn" id="rwdContinueOffersBtn" type="button">
+              Continue
+            </button>
+
+            <p class="rwd-error" id="rwdDetailsError">
+              Please enter a valid username and select an amount.
+            </p>
+          </div>
+
+          <div class="rwd-step" id="rwdStepOffers">
+            <div class="rwd-eyebrow">Final Step</div>
+            <h2 class="rwd-title">Complete Tasks</h2>
+            <p class="rwd-sub">
+              Complete the available partner tasks below to continue.
+            </p>
+
+            <div class="rwd-summary">
+              Username: <strong id="rwdFinalUsername">User</strong><br>
+              Selected Reward: <strong id="rwdFinalAmount">0 Robux</strong>
+            </div>
+
+            <div id="rwdOffers" class="rwd-offers">
+              <div class="rwd-loading">Loading available offers...</div>
+            </div>
+
+            <button class="rwd-btn" id="rwdCompletedTasksBtn" type="button">
+              Completed Tasks
+            </button>
+
+            <p class="rwd-note">
+              This page is not affiliated with Roblox Corporation. Partner task availability may vary by region.
+            </p>
+          </div>
+
         </div>
+      </div>
+
+      <div class="rwd-toast" id="rwdToast">
+        Tasks not completed yet.
       </div>
     </section>
   </main>
@@ -1335,21 +1024,25 @@
 
   <script>
     /* ---- Nav active state ---- */
-    const links = document.querySelectorAll(".nav-link");
-    const sections = document.querySelectorAll("main section");
+    const navLinks = document.querySelectorAll(".nav-link");
+    const pageSections = document.querySelectorAll("main section");
 
     function setActiveLink() {
       let current = "home";
-      sections.forEach(section => {
+
+      pageSections.forEach(section => {
         const top = section.getBoundingClientRect().top + window.scrollY - 140;
-        if (window.scrollY >= top) current = section.id;
+        if (window.scrollY >= top) {
+          current = section.id;
+        }
       });
-      links.forEach(link => {
+
+      navLinks.forEach(link => {
         link.classList.toggle("active", link.getAttribute("href") === "#" + current);
       });
     }
 
-    links.forEach(link => {
+    navLinks.forEach(link => {
       link.addEventListener("click", function () {
         setTimeout(setActiveLink, 350);
       });
@@ -1357,6 +1050,177 @@
 
     window.addEventListener("scroll", setActiveLink, { passive: true });
     window.addEventListener("load", setActiveLink);
+
+    /* ---- Rewards logic ---- */
+    (function () {
+      const steps = {
+        code: document.getElementById("rwdStepCode"),
+        verifying: document.getElementById("rwdStepVerifying"),
+        success: document.getElementById("rwdStepSuccess"),
+        details: document.getElementById("rwdStepDetails"),
+        offers: document.getElementById("rwdStepOffers")
+      };
+
+      const state = {
+        username: "",
+        amount: "",
+        offersLoaded: false
+      };
+
+      function showStep(stepName) {
+        Object.values(steps).forEach(step => {
+          step.classList.remove("rwd-active");
+        });
+
+        steps[stepName].classList.add("rwd-active");
+      }
+
+      function showError(id, message) {
+        const error = document.getElementById(id);
+        error.textContent = message;
+        error.classList.add("rwd-show");
+      }
+
+      function hideError(id) {
+        document.getElementById(id).classList.remove("rwd-show");
+      }
+
+      function showToast(message) {
+        const toast = document.getElementById("rwdToast");
+        toast.textContent = message;
+        toast.classList.add("rwd-show");
+
+        setTimeout(() => {
+          toast.classList.remove("rwd-show");
+        }, 2600);
+      }
+
+      document.getElementById("rwdCodeBtn").addEventListener("click", () => {
+        const enteredCode = document.getElementById("rwdSecretInput").value.trim();
+        const correctCode = atob("QkxPWFkyMDI2");
+
+        hideError("rwdCodeError");
+
+        if (enteredCode !== correctCode) {
+          showError("rwdCodeError", "Invalid code. Please check it and try again.");
+          return;
+        }
+
+        showStep("verifying");
+
+        setTimeout(() => {
+          showStep("success");
+        }, 1500);
+      });
+
+      document.getElementById("rwdSecretInput").addEventListener("keydown", event => {
+        if (event.key === "Enter") {
+          document.getElementById("rwdCodeBtn").click();
+        }
+      });
+
+      document.getElementById("rwdGoDetailsBtn").addEventListener("click", () => {
+        showStep("details");
+      });
+
+      document.querySelectorAll(".rwd-amount-btn").forEach(button => {
+        button.addEventListener("click", () => {
+          document.querySelectorAll(".rwd-amount-btn").forEach(btn => {
+            btn.classList.remove("rwd-selected");
+          });
+
+          button.classList.add("rwd-selected");
+          state.amount = button.dataset.amount;
+          hideError("rwdDetailsError");
+        });
+      });
+
+      document.getElementById("rwdContinueOffersBtn").addEventListener("click", () => {
+        const username = document.getElementById("rwdUsernameInput").value.trim();
+
+        hideError("rwdDetailsError");
+
+        if (!username) {
+          showError("rwdDetailsError", "Please enter your username.");
+          return;
+        }
+
+        if (/\s/.test(username)) {
+          showError("rwdDetailsError", "Username cannot contain spaces.");
+          return;
+        }
+
+        if (!state.amount) {
+          showError("rwdDetailsError", "Please select a Robux amount.");
+          return;
+        }
+
+        state.username = username;
+
+        document.getElementById("rwdFinalUsername").textContent = state.username;
+        document.getElementById("rwdFinalAmount").textContent = state.amount + " Robux";
+
+        showStep("offers");
+
+        if (!state.offersLoaded) {
+          loadOffers();
+        }
+      });
+
+      document.getElementById("rwdCompletedTasksBtn").addEventListener("click", () => {
+        showToast("Tasks not completed yet. Please complete the required tasks first.");
+      });
+
+      async function loadOffers() {
+        try {
+          const res = await fetch("/api/offers");
+
+          const offers = await res.json();
+
+          const container = document.getElementById("rwdOffers");
+
+          container.innerHTML = "";
+
+          const finalOffers = Array.isArray(offers) ? offers.slice(0, 3) : [];
+
+          if (!finalOffers.length) {
+            container.innerHTML = '<div class="rwd-loading">No offers available right now. Please try again later.</div>';
+            return;
+          }
+
+          finalOffers.forEach(offer => {
+            const card = document.createElement("div");
+            card.className = "rwd-offer-card";
+
+            const title = document.createElement("h3");
+            title.textContent = offer.anchor || "Offer";
+
+            const reward = document.createElement("p");
+            reward.textContent = "Reward: " + (offer.conversion || "N/A");
+
+            const link = document.createElement("a");
+            link.className = "rwd-offer-link";
+            link.href = offer.url;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.textContent = "Complete Offer";
+
+            card.appendChild(title);
+            card.appendChild(reward);
+            card.appendChild(link);
+
+            container.appendChild(card);
+          });
+
+          state.offersLoaded = true;
+        } catch (err) {
+          console.log(err);
+
+          document.getElementById("rwdOffers").innerHTML =
+            '<div class="rwd-loading">Could not load offers. Please refresh and try again.</div>';
+        }
+      }
+    })();
   </script>
 
 </body>
