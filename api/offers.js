@@ -1,58 +1,55 @@
-export default async function handler(req, res) {
-  const API_KEY = "42656|PWYbKhc3H765iHPCbKR4Z4dT5ak1TigHQOc77MMa73812259";
+module.exports = async (req, res) => {
 
   try {
-    const ip = (req.headers['x-forwarded-for'] || '').split(',')[0] || '8.8.8.8';
-    const userAgent = req.headers['user-agent'] || "";
 
-    async function getOffers(ctype) {
-      const url = `https://checkmyapp.site/api/v2?ip=${ip}&user_agent=${encodeURIComponent(userAgent)}&ctype=${ctype}`;
+    // Get visitor IP + device
+    const ip =
+      req.headers['x-forwarded-for'] ||
+      req.socket.remoteAddress ||
+      '';
 
-      const response = await fetch(url, {
-        headers: {
-          Authorization: `Bearer ${API_KEY}`,
-        },
-      });
+    const userAgent =
+      req.headers['user-agent'] || '';
 
-      if (!response.ok) return [];
+    // Fetch region/device targeted offers
+    const response = await fetch(
+      `https://de6jvomfbm0af.cloudfront.net/public/offers/feed.php?user_id=777591&api_key=6357c879410a493e93f5247c85db72c3&ip=${encodeURIComponent(ip)}&user_agent=${encodeURIComponent(userAgent)}`
+    );
 
-      const data = await response.json();
-      return (data && data.success && Array.isArray(data.offers)) ? data.offers : [];
-    }
+    const offers = await response.json();
 
-    // 1️⃣ CPI first
-    let offers = await getOffers(1);
+    // Sort highest payout first
+    offers.sort((a, b) => {
 
-    // 2️⃣ fallback CPA
-    if (offers.length < 3) {
-      const extra = await getOffers(2);
-      offers = offers.concat(extra);
-    }
+      const payA =
+        parseFloat(
+          String(a.conversion || '0')
+          .replace(/[^0-9.]/g, '')
+        ) || 0;
 
-    // 3️⃣ remove duplicates (safer key fallback)
-    const seen = new Set();
-    const unique = [];
+      const payB =
+        parseFloat(
+          String(b.conversion || '0')
+          .replace(/[^0-9.]/g, '')
+        ) || 0;
 
-    for (let o of offers) {
-      const key = o.link || o.offerid; // fallback if link missing
-      if (!key || seen.has(key)) continue;
+      return payB - payA;
 
-      seen.add(key);
-      unique.push(o);
-    }
+    });
 
-    // 4️⃣ sort safely
-    const sorted = unique
-      .map(o => ({
-        ...o,
-        payout: Number(o.payout) || 0
-      }))
-      .sort((a, b) => b.payout - a.payout);
-
-    // 5️⃣ keep SAME behavior (top 3)
-    res.status(200).json({ offers: sorted.slice(0, 3) });
+    // Always return at least 3 offers
+    res.status(200).json(
+      offers.slice(0, 3)
+    );
 
   } catch (err) {
-    res.status(500).json({ error: "Failed", details: err.message });
+
+    console.log(err);
+
+    res.status(500).json({
+      error: 'Failed to fetch offers'
+    });
+
   }
-}
+
+};
