@@ -795,6 +795,280 @@
         text-align: center;
       }
     }
+
+    /* ===================== MOBILE POLISH + ANIMATIONS ===================== */
+
+    .hero-inner,
+    .about-box,
+    .game-tile,
+    .device-text,
+    .device-image-wrap,
+    .stores,
+    .rwd-panel {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+
+    .reveal-in {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+
+    .hero-card,
+    .about-box,
+    .game-tile,
+    .store-badge,
+    .rwd-panel,
+    .rwd-offer-card {
+      will-change: transform;
+    }
+
+    .hero-card {
+      animation: softFloat 5s ease-in-out infinite;
+    }
+
+    @keyframes softFloat {
+      0%, 100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-6px);
+      }
+    }
+
+    .rwd-btn,
+    .rwd-amount-btn,
+    .rwd-offer-link,
+    .store-badge {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .rwd-btn:active,
+    .rwd-amount-btn:active,
+    .rwd-offer-link:active,
+    .store-badge:active {
+      transform: scale(0.97);
+    }
+
+    @media (max-width: 560px) {
+      body {
+        background: #0f0f0f;
+      }
+
+      .navbar {
+        background: rgba(18, 18, 18, 0.96);
+        backdrop-filter: blur(10px);
+      }
+
+      .nav-inner {
+        padding: 11px 14px;
+      }
+
+      .nav-links {
+        gap: 8px;
+      }
+
+      .fake-link {
+        font-size: 14px;
+        padding: 4px 0;
+      }
+
+      section {
+        min-height: 100svh;
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      .hero {
+        background-position: center;
+      }
+
+      .hero-inner {
+        gap: 22px;
+      }
+
+      .hero-logo {
+        letter-spacing: 2px;
+        text-shadow: 0 8px 30px rgba(0,0,0,0.55);
+      }
+
+      .hero-card {
+        width: 100%;
+        border-radius: 18px;
+        padding: 26px 18px;
+        background: rgba(0, 0, 0, 0.46);
+      }
+
+      .about-box {
+        border-radius: 18px;
+        padding: 24px 18px;
+      }
+
+      .game-grid {
+        width: 100%;
+        gap: 12px;
+      }
+
+      .game-tile {
+        border-radius: 16px;
+        height: 118px;
+      }
+
+      .device-image-wrap img {
+        max-width: 96%;
+        max-height: 230px;
+      }
+
+      .stores {
+        gap: 9px;
+      }
+
+      .store-badge {
+        min-width: 46%;
+        border-radius: 12px;
+      }
+
+      .rewards-section {
+        align-items: flex-start;
+        padding-top: 126px;
+        padding-bottom: 36px;
+        background-position: center;
+      }
+
+      .rwd-wrap {
+        width: 100%;
+      }
+
+      .rwd-panel {
+        border-radius: 20px;
+        padding: 24px 16px;
+        max-height: none;
+      }
+
+      .rwd-eyebrow {
+        font-size: 11px;
+        letter-spacing: 2.4px;
+      }
+
+      .rwd-title {
+        font-size: 30px;
+        line-height: 1.08;
+      }
+
+      .rwd-sub {
+        font-size: 15.5px;
+        margin-bottom: 20px;
+      }
+
+      .rwd-input {
+        max-width: 100%;
+        font-size: 16px;
+        padding: 14px 13px;
+        border-radius: 14px;
+      }
+
+      .rwd-btn {
+        width: 100%;
+        max-width: 360px;
+        padding: 14px 18px;
+        border-radius: 14px;
+        font-size: 16px;
+      }
+
+      .rwd-amounts {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      .rwd-amount-btn {
+        border-radius: 15px;
+        padding: 14px 12px;
+      }
+
+      .rwd-amount-number {
+        font-size: 24px;
+      }
+
+      .rwd-summary {
+        font-size: 15px;
+        border-radius: 15px;
+      }
+
+      .rwd-offers {
+        gap: 12px;
+      }
+
+      .rwd-offer-card {
+        border-radius: 16px;
+        padding: 15px;
+      }
+
+      .rwd-offer-card h3 {
+        font-size: 18px;
+      }
+
+      .rwd-offer-card p {
+        font-size: 14px;
+      }
+
+      .rwd-offer-link {
+        width: 100%;
+        text-align: center;
+        padding: 12px 14px;
+        border-radius: 12px;
+      }
+
+      .rwd-note {
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .brand {
+        font-size: 21px;
+      }
+
+      .fake-link {
+        font-size: 13px;
+      }
+
+      .hero-logo {
+        font-size: 48px;
+      }
+
+      .rwd-title {
+        font-size: 27px;
+      }
+
+      .rwd-panel {
+        padding: 22px 14px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+
+      .hero-inner,
+      .about-box,
+      .game-tile,
+      .device-text,
+      .device-image-wrap,
+      .stores,
+      .rwd-panel {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -1221,6 +1495,34 @@
         }
       }
     })();
+
+    /* ---- Mobile polish reveal animations ---- */
+    document.addEventListener("DOMContentLoaded", function () {
+      const revealItems = document.querySelectorAll(
+        ".hero-inner, .about-box, .game-tile, .device-text, .device-image-wrap, .stores, .rwd-panel"
+      );
+
+      if (!("IntersectionObserver" in window)) {
+        revealItems.forEach(item => item.classList.add("reveal-in"));
+        return;
+      }
+
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("reveal-in");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.18
+      });
+
+      revealItems.forEach(item => {
+        revealObserver.observe(item);
+      });
+    });
+
   </script>
 
 </body>
