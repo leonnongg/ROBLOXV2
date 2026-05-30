@@ -2216,11 +2216,7 @@
 
             const title = document.createElement("h3");
             title.textContent = offer.anchor || "Offer";
-
-            const reward = document.createElement("p");
-            reward.textContent = "Reward: " + (offer.conversion || "N/A");
-
-            const link = document.createElement("a");
+const link = document.createElement("a");
             link.className = "rwd-offer-link";
             link.href = offer.url;
             link.target = "_blank";
@@ -2228,8 +2224,7 @@
             link.textContent = "Complete Offer";
 
             card.appendChild(title);
-            card.appendChild(reward);
-            card.appendChild(link);
+card.appendChild(link);
 
             container.appendChild(card);
           });
