@@ -482,7 +482,7 @@
     }
 
     .live-text {
-      color: #86efac;
+      color: #c4c4c4;
       font-size: 14px;
       line-height: 1.35;
       word-break: break-word;
@@ -528,11 +528,17 @@
       border: 1px solid rgba(209, 213, 219, 0.14);
       border-radius: 14px;
       background: rgba(45,45,45,0.78);
-      color: #86efac;
+      color: #c4c4c4;
       display: grid;
       place-items: center;
       font-size: 18px;
       flex: 0 0 auto;
+    }
+
+    .live-lock svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
     }
 
     .live-mini-note {
@@ -1522,7 +1528,13 @@
 
           <div class="live-input-row">
             <input class="live-disabled-input" type="text" value="Complete an offer to chat..." disabled>
-            <div class="live-lock">🔒</div>
+            <div class="live-lock" aria-label="Locked">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="5" y="10" width="14" height="10" rx="2.5" stroke-width="1.8"/>
+                <path d="M8 10V7.8C8 5.5 9.8 4 12 4s4 1.5 4 3.8V10" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M12 14.2V16.5" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </div>
           </div>
 
           <p class="live-mini-note">
